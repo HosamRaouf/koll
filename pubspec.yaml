@@ -1,0 +1,146 @@
+name: kol
+description: تطبيق مطاعم دكرنس
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  google_fonts: ^6.1.0
+  flutter_screenutil: ^5.7.0
+  arabic_font: ^0.0.9
+  getwidget: ^4.0.0
+  google_nav_bar: ^5.0.6
+  font_awesome_flutter: ^10.4.0
+  url_launcher: ^6.1.10
+  image_stack: ^2.1.1
+  share_plus: ^7.2.2
+  cool_dropdown: ^2.1.0
+  dropdown_textfield: ^1.0.8
+  iconsax: ^0.0.8
+  carousel_slider: ^5.1.1
+  flutter_animate: ^4.5.0
+  image_picker: ^1.0.2
+  uuid:
+  flutter_staggered_animations:
+  flutter_staggered_grid_view: ^0.7.0
+  intl: ^0.20.2
+  google_maps_flutter_platform_interface: ^2.4.1
+  google_maps_flutter:
+  geolocator: ^10.1.0
+  permission_handler: ^11.0.1
+  geocoding: ^2.2.0
+  dio: ^5.4.1
+  flutter_image_slideshow: ^0.1.6
+  cached_network_image: ^3.3.0
+  shared_preferences: ^2.0.10
+  firebase_core:
+  firebase_auth: ^4.12.1
+  cloud_firestore: ^4.15.5
+  cloud_functions: ^4.6.0
+  connectivity_plus: ^5.0.2
+  firebase_storage:
+  styled_divider: ^1.0.5
+  flutter_colorpicker: ^1.0.3
+  persistent_header_adaptive: ^2.1.0
+  scrollable_positioned_list: ^0.3.8
+  firebase_messaging: ^14.7.16
+  async: ^2.11.0
+  photo_view: ^0.14.0
+  mailer: ^6.1.0
+  rxdart: ^0.27.7
+  flutter_local_notifications:
+  awesome_notifications: ^0.10.1
+  rive: ^0.13.1
+  audioplayers: ^5.2.1
+  flutter_launcher_icons: ^0.13.1
+  googleapis_auth: ^1.6.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+
+  collection: any
+  equatable: any
+  http: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/audio/1.mp3
+    - assets/audio/3omda.mp3
+    - assets/audio/5allasoona.mp3
+    - assets/audio/cancel.mp3
+    - assets/audio/kebda.mp3
+    - assets/audio/mabrook.mp3
+    - assets/audio/order.mp3
+    - assets/audio/3alnaar.mp3
+    - assets/audio/beeb.mp3
+    - assets/audio/complete.mp3
+    - assets/audio/ehdaa.mp3
+    - assets/images/delivery.png
+    - assets/images/dessert/1.png
+    - assets/images/dessert/2.png
+    - assets/images/dessert/3.png
+    - assets/images/dessert/4.png
+    - assets/images/dessert/5.png
+    - assets/images/dessert/6.png
+    - assets/images/dessert/7.png
+    - assets/images/dessert/8.png
+    - assets/images/dessert/9.png
+    - assets/images/dessert/10.png
+    - assets/images/dessert/11.png
+    - assets/images/dessert/12.png
+    - assets/images/dessert/13.png
+    - assets/images/dessert/14.png
+    - assets/images/drinks/1.png
+    - assets/images/drinks/2.png
+    - assets/images/drinks/3.png
+    - assets/images/drinks/4.png
+    - assets/images/drinks/5.png
+    - assets/images/drinks/6.png
+    - assets/images/drinks/7.png
+    - assets/images/drinks/8.png
+    - assets/images/food/1.png
+    - assets/images/food/2.png
+    - assets/images/food/3.png
+    - assets/images/food/4.png
+    - assets/images/food/5.png
+    - assets/images/food/6.png
+    - assets/images/food/7.png
+    - assets/images/food/8.png
+    - assets/images/food/9.png
+    - assets/images/food/10.png
+    - assets/images/food/11.png
+    - assets/images/food/12.png
+    - assets/images/food/13.png
+    - assets/images/food/14.png
+    - assets/images/food/15.png
+    - assets/images/food/16.png
+    - assets/images/food/17.png
+    - assets/images/food/18.png
+    - assets/images/food/19.png
+    - assets/images/food/20.png
+    - assets/images/food/21.png
+    - assets/images/food/22.png
+    - assets/images/food/23.png
+    - assets/riv/
