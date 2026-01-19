@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kol/core/firebase_messaging/getToken.dart';
 import 'package:kol/core/firestore_database/getDocId.dart';
 import 'package:kol/core/models/restaurant_model.dart';
@@ -239,7 +240,7 @@ assignValues() async {
         restaurantData.rates.add(RestaurantRate.fromJson(data));
       });
 
-  await fetchUsers();
+  kIsWeb ? null : await fetchUsers();
 
   await FirebaseFirestore.instance.collection("vouchers").get().then((value) {
     if (value.docs.isNotEmpty) {

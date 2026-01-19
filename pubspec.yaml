@@ -61,7 +61,8 @@ dependencies:
   rive: ^0.13.1
   audioplayers: ^5.2.1
   flutter_launcher_icons: ^0.13.1
-  googleapis_auth: ^1.6.0
+  elegant_notification: ^1.11.0
+
 
 flutter_launcher_icons:
   android: true

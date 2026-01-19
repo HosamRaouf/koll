@@ -65,6 +65,7 @@ class Order extends StatefulWidget {
   final UserModel user;
   final bool isKitchen;
   final Function()? onReady;
+  final bool isLate;
 
   const Order(
       {Key? key,
@@ -76,7 +77,8 @@ class Order extends StatefulWidget {
       required this.user,
       this.isKitchen = false,
       this.onReady,
-      required this.onDelete})
+      required this.onDelete,
+      required this.isLate})
       : super(key: key);
 
   @override
@@ -102,13 +104,19 @@ class _OrderState extends State<Order> {
         widget.order.deliveryFee.toDouble();
   }
 
-  String get orderNumber => widget.order.id.hashCode.toString().substring(0, 3);
-
   @override
   Widget build(BuildContext context) {
     final cartItemsTotal = this.cartItemsTotal;
     final total = this.total;
-    final orderNumber = this.orderNumber;
+    final orderNumber = widget.order.orderNumber == ""
+        ? "000"
+        : int.parse(widget.order.orderNumber) < 10
+            ? "00${widget.order.orderNumber}"
+            : int.parse(widget.order.orderNumber) < 100
+                ? "0${widget.order.orderNumber}"
+                : widget.order.orderNumber;
+
+    print(orderNumber);
 
     return Padding(
       padding: EdgeInsets.all(24.sp),
@@ -189,76 +197,124 @@ class _OrderState extends State<Order> {
                             padding: EdgeInsets.only(
                                 right: kIsWeb ? 12.sp : 24.sp,
                                 left: kIsWeb ? 12.sp : 24.sp),
-                            child: MyInkWell(
-                              onTap: () {
-                                Navigator.of(context).push(ScaleTransition5(
-                                    UserProfile(user: widget.user)));
-                              },
-                              radius: 28.r,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          height: 36.h,
-                                          child: Text(
-                                            'طلب بإسم',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium
-                                                ?.copyWith(
-                                                    fontSize:
-                                                        kIsWeb ? 22.sp : 30.sp,
-                                                    color: smallFontColor
-                                                        .withOpacity(0.7),
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                            child: IgnorePointer(
+                              ignoring: kIsWeb,
+                              child: MyInkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(ScaleTransition5(
+                                      UserProfile(user: widget.user)));
+                                },
+                                radius: 28.r,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          widget.isLate
+                                              ? Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.deepOrange,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              1000.r)),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0.sp),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "بيستعجلك",
+                                                          style: TextStyling
+                                                              .headline
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: kIsWeb
+                                                                      ? 22.sp
+                                                                      : 36.sp),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 4.sp,
+                                                        ),
+                                                        Icon(
+                                                          Iconsax.danger5,
+                                                          color: Colors.white,
+                                                          size: 22.sp,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                height: 36.h,
+                                                child: Text(
+                                                  'طلب بإسم',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displayMedium
+                                                      ?.copyWith(
+                                                          fontSize: kIsWeb
+                                                              ? 22.sp
+                                                              : 30.sp,
+                                                          color: smallFontColor
+                                                              .withOpacity(0.7),
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                ),
+                                              ),
+                                              Text(
+                                                widget.user.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                textAlign: TextAlign.end,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.copyWith(
+                                                        fontSize: kIsWeb
+                                                            ? 28.sp
+                                                            : 48.sp,
+                                                        color: primaryColor,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                              )
+                                            ],
                                           ),
-                                        ),
-                                        Text(
-                                          widget.user.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.end,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayLarge
-                                              ?.copyWith(
-                                                  fontSize:
-                                                      kIsWeb ? 28.sp : 48.sp,
-                                                  color: primaryColor,
-                                                  fontWeight: FontWeight.w600),
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 35.sp,
-                                  ),
-                                  SizedBox(
-                                      width: 0.06.sh,
-                                      height: 0.06.sh,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100.sp),
-                                          child: widget.user.imageUrl ==
-                                                      'assets/images/user.png' ||
-                                                  widget.user.imageUrl == ""
-                                              ? Image.asset(
-                                                  'assets/images/user.png',
-                                                  fit: BoxFit.cover)
-                                              : CachedAvatar(
-                                                  fit: BoxFit.cover,
-                                                  imageUrl:
-                                                      widget.user.imageUrl)))
-                                ],
+                                    SizedBox(
+                                      width: 35.sp,
+                                    ),
+                                    SizedBox(
+                                        width: 0.06.sh,
+                                        height: 0.06.sh,
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100.sp),
+                                            child: widget.user.imageUrl ==
+                                                        'assets/images/user.png' ||
+                                                    widget.user.imageUrl == ""
+                                                ? Image.asset(
+                                                    'assets/images/user.png',
+                                                    fit: BoxFit.cover)
+                                                : CachedAvatar(
+                                                    fit: BoxFit.cover,
+                                                    imageUrl:
+                                                        widget.user.imageUrl)))
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -800,13 +856,17 @@ class _OrderState extends State<Order> {
                                     ),
                                   )
                                 : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(height: 12.sp),
                                       Text(
                                         "مستني الأوردر يجهز من المطبخ...",
+                                        textAlign: TextAlign.center,
+                                        textDirection: TextDirection.rtl,
                                         style: TextStyling.smallFont.copyWith(
-                                            color: primaryColor,
-                                            fontSize: kIsWeb ? 18.sp : 32.sp,
+                                            color: Colors.deepOrange,
+                                            fontSize: kIsWeb ? 22.sp : 32.sp,
                                             fontWeight: FontWeight.w600),
                                       )
                                     ],

@@ -28,5 +28,7 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+    <key>NSUserNotificationUsageDescription</key>
+    <string>We need to show notifications for new orders.</string>
 </dict>
 </plist>

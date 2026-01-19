@@ -1,0 +1,63 @@
+type Restaurant @table {
+  name: String!
+  address: String!
+  phone: String!
+  email: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  description: String
+  logoUrl: String
+  deliveryFee: Float
+}
+
+type MenuItem @table {
+  restaurant: Restaurant
+  category: Category
+  name: String!
+  price: Float!
+  available: Boolean!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  description: String
+  imageUrl: String
+}
+
+type Category @table {
+  restaurant: Restaurant
+  name: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  description: String
+}
+
+type Order @table {
+  restaurant: Restaurant
+  customerName: String!
+  customerAddress: String!
+  customerPhone: String!
+  totalAmount: Float!
+  status: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  specialInstructions: String
+  deliveryInstructions: String
+}
+
+type OrderItem @table {
+  order: Order
+  menuItem: MenuItem
+  quantity: Int!
+  unitPrice: Float!
+  createdAt: Timestamp!
+  notes: String
+}
+
+type DeliveryZone @table {
+  restaurant: Restaurant
+  name: String!
+  polygonCoordinates: String!
+  deliveryFee: Float!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  minOrderValue: Float
+}

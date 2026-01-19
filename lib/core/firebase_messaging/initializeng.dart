@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kol/core/firebase_messaging/showNotification.dart';
 import 'package:kol/map.dart';
 import 'package:kol/navigation_animations.dart';
 import 'package:kol/screens/drivers_screen/drivers_screen.dart';
@@ -13,35 +14,47 @@ import 'package:rxdart/rxdart.dart';
 import '../../routes/app_routes.dart';
 import '../models/driver_model.dart';
 
-var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+var initializationSettingsAndroid =
+    const AndroidInitializationSettings('app_icon');
 
 notificationHandler(RemoteMessage message) async {
+  if (kDebugMode) {
+    print('🔔 Handler received message: ${message.messageId}');
+  }
+
+  // Handle late orders logic
+  if (message.notification?.body != null) {
+    List<String> orders = List.from(lateOrders.value);
+    orders.add(message.notification!.body!);
+    lateOrders.value = orders;
+  }
+
+  // Show system notification (Windows/macOS Notification Center)
+  // AwesomeNotifications handles the native browser Notification API on Web
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: -1, // -1 is replaced by a random number
-        channelKey: 'call_channel',
-        title: message.notification?.title,
-        body: message.notification?.body,
-        bigPicture: message.data["image"],
-        notificationLayout: NotificationLayout.BigPicture,
-        customSound: message.data["sound"],
-        category: NotificationCategory.Alarm,
-        badge: 1,
-        duration: const Duration(milliseconds: 650),
-        displayOnBackground: true,
-        displayOnForeground: true,
-        criticalAlert: true,
-        roundedBigPicture: true,
-        locked: true,
-        timeoutAfter: const Duration(milliseconds: 650),
-        wakeUpScreen: true,
-        payload: {'notificationId': message.messageId}),
+      id: DateTime.now().millisecond,
+      channelKey: 'call_channel',
+      title: message.notification?.title,
+      body: message.notification?.body,
+      notificationLayout: NotificationLayout.Default,
+      payload:
+          message.data.map((key, value) => MapEntry(key, value.toString())),
+    ),
   );
+
+  // Additionally show the in-app toast on Web if desired
+  if (kIsWeb) {
+    showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
+        title: message.notification?.title ?? "",
+        description: message.notification?.body ?? "");
+  }
 }
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  // Request FCM permissions
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: true,
@@ -51,6 +64,13 @@ void requestPermission() async {
     provisional: true,
     sound: true,
   );
+
+  // Also request AwesomeNotifications permissions for System Notifications
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     print('User granted permission');
@@ -77,11 +97,16 @@ notificationListener() {
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-// Handle incoming data message when the app is in the background or terminated
     print("Data message opened: ${message.data}");
     switch (message.data["click_action"]) {
       case "order":
-        {}
+        {
+          showSuccessNotification(
+            NamedNavigatorImpl.navigatorState.currentContext!,
+            title: message.notification?.title ?? "",
+            description: message.notification?.body ?? "",
+          );
+        }
         break;
       case "driver":
         {
@@ -108,57 +133,3 @@ notificationListener() {
   FirebaseMessaging.onBackgroundMessage(
       (message) => notificationHandler(message));
 }
-
-// void loadFCM() async {
-//   if (!kIsWeb) {
-//     channel = const AndroidNotificationChannel(
-//       'high_importance_channel', // id
-//       'High Importance Notifications', // title
-//       importance: Importance.high,
-//       enableVibration: true,
-//     );
-//
-//     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-//
-//     /// Create an Android Notification Channel.
-//     ///
-//     /// We use this channel in the `AndroidManifest.xml` file to override the
-//     /// default FCM channel to enable heads up notifications.
-//     await flutterLocalNotificationsPlugin
-//         .resolvePlatformSpecificImplementation<
-//             AndroidFlutterLocalNotificationsPlugin>()
-//         ?.createNotificationChannel(channel);
-//
-//     /// Update the iOS foreground notification presentation options to allow
-//     /// heads up notifications.
-//     await FirebaseMessaging.instance
-//         .setForegroundNotificationPresentationOptions(
-//       alert: true,
-//       badge: true,
-//       sound: true,
-//     );
-//   }
-// }
-
-// void listenFCM() async {
-//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//     RemoteNotification? notification = message.notification;
-//     AndroidNotification? android = message.notification?.android;
-//     if (notification != null && android != null) {
-//       flutterLocalNotificationsPlugin.show(
-//         notification.hashCode,
-//         notification.title,
-//         notification.body,
-//         NotificationDetails(
-//           android: AndroidNotificationDetails(
-//             channel.id,
-//             channel.name,
-//             // TODO add a proper drawable resource to android, for now using
-//             //      one that already exists in example app.
-//             icon: 'launch_background',
-//           ),
-//         ),
-//       );
-//     }
-//   });
-// }

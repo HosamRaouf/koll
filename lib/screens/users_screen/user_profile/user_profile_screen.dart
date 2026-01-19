@@ -210,6 +210,7 @@ class _UserProfileState extends State<UserProfile>
                                     element.restaurantId == restaurantData.id)
                                 .length, (index) {
                       return Order(
+                          isLate: false,
                           order: widget.user.finishedOrders
                               .where((element) =>
                                   element.restaurantId == restaurantData.id)

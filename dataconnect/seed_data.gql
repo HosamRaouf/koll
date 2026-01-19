@@ -1,0 +1,64 @@
+mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "This mutation is for seeding data and is safe to expose to the public.") {
+  restaurant_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Demo Restaurant 1",
+      address: "123 Main St",
+      email: "demo1@example.com",
+      phone: "555-1234",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Demo Restaurant 2",
+      address: "456 Elm St",
+      email: "demo2@example.com",
+      phone: "555-5678",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    }
+  ])
+  category_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440000",
+      restaurantId: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Appetizers",
+      description: "Delicious starters",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    },
+    {
+      id: "650e8400-e29b-41d4-a716-446655440001",
+      restaurantId: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Main Courses",
+      description: "Entrees",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    }
+  ])
+  menuItem_insertMany(data: [
+    {
+      id: "750e8400-e29b-41d4-a716-446655440000",
+      restaurantId: "550e8400-e29b-41d4-a716-446655440000",
+      categoryId: "650e8400-e29b-41d4-a716-446655440000",
+      name: "Garlic Bread",
+      description: "Toasty",
+      price: 5.99,
+      available: true,
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440001",
+      restaurantId: "550e8400-e29b-41d4-a716-446655440001",
+      categoryId: "650e8400-e29b-41d4-a716-446655440001",
+      name: "Steak",
+      description: "Juicy",
+      price: 25.99,
+      available: true,
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    }
+  ])
+}

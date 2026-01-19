@@ -18,6 +18,7 @@ String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 
 class OrderModel {
   String id;
+  String orderNumber;
   String userId;
   String restaurantId;
   LocationModel location;
@@ -43,6 +44,7 @@ class OrderModel {
       {required this.id,
       required this.userId,
       required this.restaurantId,
+      required this.orderNumber,
       required this.location,
       required this.phoneNumber,
       required this.userFCMToken,
@@ -65,6 +67,7 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
       id: json["id"],
       userId: json["userId"],
+      orderNumber: json["orderNumber"] ?? "000",
       restaurantId: json["restaurantId"],
       location: LocationModel.fromJson(
         json["location"],
@@ -92,6 +95,7 @@ class OrderModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
+        "orderNumber": orderNumber,
         "restaurantId": restaurantId,
         "location": location.toJson(),
         "phoneNumber": phoneNumber,

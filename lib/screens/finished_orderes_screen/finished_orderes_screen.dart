@@ -182,6 +182,7 @@ class _FinishedOrdersScreenState extends State<FinishedOrdersScreen> {
           children: List.generate(
               sameDateOrders.length,
               (index) => Order(
+                  isLate: false,
                   order: sameDateOrders[index],
                   onOrderAccepted: () {},
                   onOrderSubmit: (order, driver) {},

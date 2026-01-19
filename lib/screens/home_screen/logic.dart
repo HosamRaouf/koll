@@ -19,6 +19,29 @@ AudioPlayer audioPlayer = AudioPlayer();
 
 List<Widget> orders = [];
 
+Future incrementRestaurantOrderIndex(String restaurantId) async {
+  DocumentReference restaurantRef = restaurants.doc(restaurantId);
+
+  return FirebaseFirestore.instance.runTransaction((transaction) async {
+    DocumentSnapshot snapshot = await transaction.get(restaurantRef);
+
+    if (!snapshot.exists) {
+      throw Exception("Restaurant does not exist!");
+    }
+
+    int currentIndex = 0;
+    try {
+      currentIndex = snapshot.get('orderIndex') ?? 0;
+    } catch (e) {
+      currentIndex = 0;
+    }
+
+    int nextIndex = currentIndex - 1;
+
+    transaction.update(restaurantRef, {'orderIndex': nextIndex});
+  });
+}
+
 declineOrder(OrderModel order, String body) async {
   String orderNumber = order.id.hashCode.toString().substring(0, 3);
   print(
@@ -35,6 +58,7 @@ declineOrder(OrderModel order, String body) async {
         .collection("orders")
         .doc(order.id)
         .delete();
+    incrementRestaurantOrderIndex(restaurantData.id);
     sendNotification(order.userFCMToken, "أوردر رقم $orderNumber اترفض☹️", body,
         data: "order");
     print(

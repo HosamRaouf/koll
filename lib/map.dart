@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:flutter/cupertino.dart';
 import 'package:kol/core/models/user_models/user_model.dart';
 
 import 'core/models/rating_models/restaurant_rate_model.dart';
@@ -13,6 +14,8 @@ List<UserModel> users = allUsers.map((e) => UserModel.fromJson(e)).toList();
 CollectionReference restaurants =
     FirebaseFirestore.instance.collection('restaurants');
 DocumentReference restaurantDocument = restaurants.doc(restaurantData.id);
+
+ValueNotifier<List<String>> lateOrders = ValueNotifier([]);
 
 enum Day {
   monday,
