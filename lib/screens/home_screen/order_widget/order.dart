@@ -119,7 +119,7 @@ class _OrderState extends State<Order> {
     print(orderNumber);
 
     return Padding(
-      padding: EdgeInsets.all(24.sp),
+      padding: EdgeInsets.all(kIsWeb ? 20.sp : 24.sp),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -132,12 +132,12 @@ class _OrderState extends State<Order> {
                 borderRadius: BorderRadius.circular(40.r),
               ),
               child: Padding(
-                padding: EdgeInsets.all(12.0.sp),
+                padding: EdgeInsets.all(kIsWeb ? 8.0.sp : 12.0.sp),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(12.sp),
+                      padding: EdgeInsets.all(kIsWeb ? 8.sp : 12.sp),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,33 +170,83 @@ class _OrderState extends State<Order> {
                                       iconColor: primaryColor,
                                       color: Colors.white,
                                     ),
-                          Expanded(
-                            child: SizedBox(
-                              height: kIsWeb ? 48.h : 0.08.sw,
-                              child: Text(
-                                "أوردر رقم $orderNumber",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                textAlign: TextAlign.end,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge
-                                    ?.copyWith(
-                                        fontSize: kIsWeb ? 28.sp : 48.sp,
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          )
+                          widget.isLate
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.deepOrange,
+                                      borderRadius:
+                                          BorderRadius.circular(1000.r)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                        kIsWeb ? 8.0.sp : 8.0.sp),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "بيستعجلك",
+                                          style: TextStyling.headline.copyWith(
+                                              color: Colors.white,
+                                              fontSize: kIsWeb ? 18.sp : 36.sp),
+                                        ),
+                                        SizedBox(
+                                          width: 4.sp,
+                                        ),
+                                        Icon(
+                                          Iconsax.danger5,
+                                          color: Colors.white,
+                                          size: 18.sp,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  height: kIsWeb ? 48.h : 0.08.sw,
+                                  child: Text(
+                                    "أوردر رقم $orderNumber",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.end,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge
+                                        ?.copyWith(
+                                            fontSize: kIsWeb ? 24.sp : 48.sp,
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Text(
+                                  widget.order.time,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  textAlign: TextAlign.end,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                          fontSize: kIsWeb ? 14.sp : 48.sp,
+                                          color: smallFontColor,
+                                          fontWeight: FontWeight.w600),
+                                ),
+                              ]),
                         ],
                       ),
+                    ),
+                    const StyledDivider(
+                      thickness: 1,
+                      lineStyle: DividerLineStyle.solid,
                     ),
                     widget.isKitchen
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.only(
-                                right: kIsWeb ? 12.sp : 24.sp,
-                                left: kIsWeb ? 12.sp : 24.sp),
+                                right: kIsWeb ? 8.sp : 24.sp,
+                                left: kIsWeb ? 8.sp : 24.sp),
                             child: IgnorePointer(
                               ignoring: kIsWeb,
                               child: MyInkWell(
@@ -209,90 +259,43 @@ class _OrderState extends State<Order> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          widget.isLate
-                                              ? Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.deepOrange,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              1000.r)),
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0.sp),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          "بيستعجلك",
-                                                          style: TextStyling
-                                                              .headline
-                                                              .copyWith(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: kIsWeb
-                                                                      ? 22.sp
-                                                                      : 36.sp),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 4.sp,
-                                                        ),
-                                                        Icon(
-                                                          Iconsax.danger5,
-                                                          color: Colors.white,
-                                                          size: 22.sp,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              SizedBox(
-                                                height: 36.h,
-                                                child: Text(
-                                                  'طلب بإسم',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium
-                                                      ?.copyWith(
-                                                          fontSize: kIsWeb
-                                                              ? 22.sp
-                                                              : 30.sp,
-                                                          color: smallFontColor
-                                                              .withOpacity(0.7),
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.user.name,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                textAlign: TextAlign.end,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displayLarge
-                                                    ?.copyWith(
-                                                        fontSize: kIsWeb
-                                                            ? 28.sp
-                                                            : 48.sp,
-                                                        color: primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                              )
-                                            ],
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          height: 36.h,
+                                          child: Text(
+                                            'طلب بإسم',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium
+                                                ?.copyWith(
+                                                    fontSize:
+                                                        kIsWeb ? 18.sp : 30.sp,
+                                                    color: smallFontColor
+                                                        .withOpacity(0.7),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Text(
+                                          widget.user.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.end,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge
+                                              ?.copyWith(
+                                                  fontSize:
+                                                      kIsWeb ? 24.sp : 48.sp,
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.w600),
+                                        )
+                                      ],
                                     ),
                                     SizedBox(
                                       width: 35.sp,
@@ -327,13 +330,13 @@ class _OrderState extends State<Order> {
                     widget.isKitchen
                         ? Container()
                         : SizedBox(
-                            height: 24.sp,
+                            height: kIsWeb ? 0.sp : 24.sp,
                           ),
                     widget.isKitchen
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 18.sp : 50.sp),
+                                horizontal: kIsWeb ? 14.sp : 50.sp),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -356,7 +359,7 @@ class _OrderState extends State<Order> {
                                             radius: 10.r,
                                             child: Padding(
                                               padding: EdgeInsets.all(
-                                                  kIsWeb ? 12.sp : 8.0.sp),
+                                                  kIsWeb ? 8.sp : 8.0.sp),
                                               child: Text(
                                                 "عرض العنوان",
                                                 textAlign: TextAlign.end,
@@ -365,7 +368,7 @@ class _OrderState extends State<Order> {
                                                     .displayMedium
                                                     ?.copyWith(
                                                         fontSize: kIsWeb
-                                                            ? 16.sp
+                                                            ? 12.sp
                                                             : 36.sp,
                                                         color: Colors.blue,
                                                         fontStyle:
@@ -387,10 +390,10 @@ class _OrderState extends State<Order> {
                                                       TextOverflow.ellipsis,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .displayMedium
-                                                      ?.copyWith(
+                                                      .displayMedium!
+                                                      .copyWith(
                                                           fontSize: kIsWeb
-                                                              ? 22.sp
+                                                              ? 18.sp
                                                               : 42.sp,
                                                           color: primaryColor,
                                                           fontWeight:
@@ -409,7 +412,7 @@ class _OrderState extends State<Order> {
                                                         .displayMedium
                                                         ?.copyWith(
                                                             fontSize: kIsWeb
-                                                                ? 18.sp
+                                                                ? 14.sp
                                                                 : 36.sp,
                                                             color:
                                                                 smallFontColor,
@@ -425,17 +428,17 @@ class _OrderState extends State<Order> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: kIsWeb ? 22.sp : 60.sp,
+                                      width: kIsWeb ? 18.sp : 60.sp,
                                     ),
                                     Icon(
                                       FontAwesomeIcons.locationDot,
-                                      size: kIsWeb ? 22.sp : 40.sp,
+                                      size: kIsWeb ? 14.sp : 40.sp,
                                       color: primaryColor,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 24.sp,
+                                  height: kIsWeb ? 12.sp : 24.sp,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -444,7 +447,7 @@ class _OrderState extends State<Order> {
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.only(
-                                            right: kIsWeb ? 22.sp : 60.sp),
+                                            right: kIsWeb ? 18.sp : 60.sp),
                                         child: MyInkWell(
                                           onTap: () {
                                             launchUrlString(
@@ -460,7 +463,7 @@ class _OrderState extends State<Order> {
                                                 .displayMedium
                                                 ?.copyWith(
                                                     fontSize:
-                                                        kIsWeb ? 22.sp : 40.sp,
+                                                        kIsWeb ? 18.sp : 40.sp,
                                                     color: Colors.blue,
                                                     fontStyle: FontStyle.italic,
                                                     fontWeight:
@@ -471,13 +474,13 @@ class _OrderState extends State<Order> {
                                     ),
                                     Icon(
                                       FontAwesomeIcons.phone,
-                                      size: kIsWeb ? 22.sp : 40.sp,
+                                      size: kIsWeb ? 14.sp : 40.sp,
                                       color: primaryColor,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 24.sp,
+                                  height: kIsWeb ? 0.sp : 24.sp,
                                 ),
                                 const StyledDivider(
                                   thickness: 1,
@@ -487,11 +490,11 @@ class _OrderState extends State<Order> {
                             ),
                           ),
                     SizedBox(
-                      height: kIsWeb ? 12.sp : 24.sp,
+                      height: kIsWeb ? 0.sp : 24.sp,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: kIsWeb ? 22.sp : 50.sp),
+                          horizontal: kIsWeb ? 18.sp : 50.sp),
                       child: Text(
                         'الطلبات',
                         textAlign: TextAlign.end,
@@ -499,17 +502,17 @@ class _OrderState extends State<Order> {
                             .textTheme
                             .displayMedium
                             ?.copyWith(
-                                fontSize: kIsWeb ? 22.sp : 42.sp,
+                                fontSize: kIsWeb ? 18.sp : 42.sp,
                                 color: primaryColor,
                                 fontWeight: FontWeight.w700),
                       ),
                     ),
                     SizedBox(
-                      height: kIsWeb ? 12.sp : 24.sp,
+                      height: kIsWeb ? 8.sp : 24.sp,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: kIsWeb ? 22.sp : 50.sp),
+                          horizontal: kIsWeb ? 18.sp : 50.sp),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -531,7 +534,7 @@ class _OrderState extends State<Order> {
                                                   fontWeight: FontWeight.w600,
                                                   color: primaryColor,
                                                   fontSize:
-                                                      kIsWeb ? 22.sp : 36.sp),
+                                                      kIsWeb ? 18.sp : 36.sp),
                                         ),
                                         Text(
                                           "EGP ${widget.order.offers[index].price.toStringAsFixed(2)}",
@@ -542,7 +545,7 @@ class _OrderState extends State<Order> {
                                                   fontWeight: FontWeight.w600,
                                                   color: primaryColor,
                                                   fontSize:
-                                                      kIsWeb ? 22.sp : 36.sp),
+                                                      kIsWeb ? 18.sp : 36.sp),
                                         ),
                                       ].reversed.toList(),
                                     )),
@@ -550,7 +553,7 @@ class _OrderState extends State<Order> {
                           widget.order.offers.isEmpty
                               ? Container()
                               : SizedBox(
-                                  height: kIsWeb ? 24.sp : 24.sp,
+                                  height: kIsWeb ? 0.sp : 24.sp,
                                 ),
                           Column(
                               children: List.generate(widget.order.items.length,
@@ -573,77 +576,83 @@ class _OrderState extends State<Order> {
                                 ? category.items[0]
                                 : category.items[itemIndex];
 
-                            return MyInkWell(
-                              radius: 24.sp,
-                              onTap: () {
-                                categoryIndex < 0 || itemIndex < 0
-                                    ? showSnackBar(
-                                        context: context,
-                                        message: "صنف غير موجود حاليًا")
-                                    : Navigator.push(
-                                        context,
-                                        ScaleTransition5(CategoryScreen(
-                                            category: category,
-                                            chosenItem: item)));
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: kIsWeb ? 12.sp : 24.sp),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Center(
-                                        child: Text(
-                                      'EGP ${(widget.order.items[index].quantity * price).toStringAsFixed(2)}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: primaryColor,
-                                              fontSize: kIsWeb ? 18.sp : 36.sp),
-                                    )),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              right: kIsWeb ? 22.sp : 40.sp),
-                                          child: SizedBox(
-                                            width: kIsWeb ? 0.1.sw : 0.5.sw,
-                                            child: Text(
-                                              itemIndex < 0 || categoryIndex < 0
-                                                  ? "x${widget.order.items[index].quantity} - صنف محذوف"
-                                                  : 'x${widget.order.items[index].quantity} ${category.name} - ${item.name} ($size)',
-                                              textDirection: TextDirection.rtl,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displayMedium
-                                                  ?.copyWith(
-                                                      fontSize: kIsWeb
-                                                          ? 18.sp
-                                                          : 36.sp,
-                                                      color: primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                            return IgnorePointer(
+                              ignoring: kIsWeb,
+                              child: MyInkWell(
+                                radius: 24.sp,
+                                onTap: () {
+                                  categoryIndex < 0 || itemIndex < 0
+                                      ? showSnackBar(
+                                          context: context,
+                                          message: "صنف غير موجود حاليًا")
+                                      : Navigator.push(
+                                          context,
+                                          ScaleTransition5(CategoryScreen(
+                                              category: category,
+                                              chosenItem: item)));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: kIsWeb ? 8.sp : 24.sp),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Center(
+                                          child: Text(
+                                        'EGP ${(widget.order.items[index].quantity * price).toStringAsFixed(2)}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: primaryColor,
+                                                fontSize:
+                                                    kIsWeb ? 14.sp : 36.sp),
+                                      )),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: kIsWeb ? 18.sp : 40.sp),
+                                            child: SizedBox(
+                                              width: kIsWeb ? 0.1.sw : 0.5.sw,
+                                              child: Text(
+                                                itemIndex < 0 ||
+                                                        categoryIndex < 0
+                                                    ? "x${widget.order.items[index].quantity} - صنف محذوف"
+                                                    : 'x${widget.order.items[index].quantity} ${category.name} - ${item.name} ($size)',
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayMedium
+                                                    ?.copyWith(
+                                                        fontSize: kIsWeb
+                                                            ? 14.sp
+                                                            : 36.sp,
+                                                        color: primaryColor,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                            width: kIsWeb ? 32.sp : 60.sp,
-                                            height: kIsWeb ? 32.sp : 60.sp,
-                                            child: categoryIndex < 0 ||
-                                                    itemIndex < 0
-                                                ? Image.asset(
-                                                    "assets/images/nointernetavatar.png")
-                                                : Image.asset(category.image))
-                                      ],
-                                    )
-                                  ],
+                                          SizedBox(
+                                              width: kIsWeb ? 28.sp : 60.sp,
+                                              height: kIsWeb ? 28.sp : 60.sp,
+                                              child: categoryIndex < 0 ||
+                                                      itemIndex < 0
+                                                  ? Image.asset(
+                                                      "assets/images/nointernetavatar.png")
+                                                  : Image.asset(category.image))
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -659,27 +668,27 @@ class _OrderState extends State<Order> {
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 22.sp : 70.sp,
-                                vertical: 24.sp),
+                                horizontal: kIsWeb ? 18.sp : 70.sp,
+                                vertical: kIsWeb ? 20.sp : 24.sp),
                             child: Text(
                               ' ملحوظة: ${widget.order.note}',
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.rtl,
                               style: TextStyling.headline
-                                  .copyWith(fontSize: kIsWeb ? 22.sp : 42.sp),
+                                  .copyWith(fontSize: kIsWeb ? 18.sp : 42.sp),
                             ),
                           ),
                     widget.isKitchen
                         ? Container()
                         : SizedBox(
-                            height: kIsWeb ? 12.sp : 24.sp,
+                            height: kIsWeb ? 0.sp : 24.sp,
                           ),
                     widget.isKitchen
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 22.sp : 50.sp,
-                                vertical: 12.sp),
+                                horizontal: kIsWeb ? 18.sp : 50.sp,
+                                vertical: kIsWeb ? 0.sp : 12.sp),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -693,7 +702,7 @@ class _OrderState extends State<Order> {
                                       .textTheme
                                       .displayMedium
                                       ?.copyWith(
-                                          fontSize: kIsWeb ? 22.sp : 36.sp,
+                                          fontSize: kIsWeb ? 18.sp : 36.sp,
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600),
                                 ),
@@ -704,7 +713,7 @@ class _OrderState extends State<Order> {
                                       .textTheme
                                       .displayMedium
                                       ?.copyWith(
-                                          fontSize: kIsWeb ? 22.sp : 36.sp,
+                                          fontSize: kIsWeb ? 18.sp : 36.sp,
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600),
                                 ),
@@ -716,7 +725,7 @@ class _OrderState extends State<Order> {
                         : widget.order.voucher.name.isNotEmpty
                             ? Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: kIsWeb ? 22.sp : 50.sp),
+                                    horizontal: kIsWeb ? 18.sp : 50.sp),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -733,7 +742,7 @@ class _OrderState extends State<Order> {
                                             .displayMedium
                                             ?.copyWith(
                                                 fontSize:
-                                                    kIsWeb ? 22.sp : 36.sp,
+                                                    kIsWeb ? 18.sp : 36.sp,
                                                 color: primaryColor,
                                                 fontWeight: FontWeight.w600),
                                       ),
@@ -745,7 +754,7 @@ class _OrderState extends State<Order> {
                                           .textTheme
                                           .displayMedium
                                           ?.copyWith(
-                                              fontSize: kIsWeb ? 22.sp : 36.sp,
+                                              fontSize: kIsWeb ? 18.sp : 36.sp,
                                               color: primaryColor,
                                               fontWeight: FontWeight.w600),
                                     ),
@@ -757,8 +766,8 @@ class _OrderState extends State<Order> {
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 22.sp : 50.sp,
-                                vertical: 12.sp),
+                                horizontal: kIsWeb ? 18.sp : 50.sp,
+                                vertical: kIsWeb ? 8.sp : 12.sp),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -774,7 +783,7 @@ class _OrderState extends State<Order> {
                                         .textTheme
                                         .displayMedium
                                         ?.copyWith(
-                                            fontSize: kIsWeb ? 22.sp : 36.sp,
+                                            fontSize: kIsWeb ? 18.sp : 36.sp,
                                             color: primaryColor,
                                             fontWeight: FontWeight.w600),
                                   ),
@@ -785,7 +794,7 @@ class _OrderState extends State<Order> {
                                       .textTheme
                                       .displayMedium
                                       ?.copyWith(
-                                          fontSize: kIsWeb ? 22.sp : 36.sp,
+                                          fontSize: kIsWeb ? 18.sp : 36.sp,
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600),
                                 ),
@@ -796,7 +805,7 @@ class _OrderState extends State<Order> {
                         ? Container()
                         : Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 22.sp : 50.sp),
+                                horizontal: kIsWeb ? 18.sp : 50.sp),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -811,7 +820,7 @@ class _OrderState extends State<Order> {
                                         .textTheme
                                         .displayMedium
                                         ?.copyWith(
-                                            fontSize: kIsWeb ? 24.sp : 48.sp,
+                                            fontSize: kIsWeb ? 20.sp : 48.sp,
                                             color: primaryColor,
                                             fontWeight: FontWeight.w700),
                                   ),
@@ -822,7 +831,7 @@ class _OrderState extends State<Order> {
                                       .textTheme
                                       .displayMedium
                                       ?.copyWith(
-                                          fontSize: kIsWeb ? 22.sp : 48.sp,
+                                          fontSize: kIsWeb ? 18.sp : 48.sp,
                                           color: primaryColor,
                                           fontWeight: FontWeight.w700),
                                 ),
@@ -830,7 +839,7 @@ class _OrderState extends State<Order> {
                             ),
                           ),
                     SizedBox(
-                      height: 24.sp,
+                      height: kIsWeb ? 0.sp : 24.sp,
                     ),
                     widget.order.state == 'عند الكاشير'
                         ? OrderButtons(
@@ -843,13 +852,13 @@ class _OrderState extends State<Order> {
                             ? widget.isKitchen
                                 ? Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: kIsWeb ? 22.sp : 50.sp),
+                                        horizontal: kIsWeb ? 18.sp : 50.sp),
                                     child: MyElevatedButton(
                                       onPressed: widget.onReady ?? () {},
                                       text: 'جاهز',
                                       width: double.infinity,
                                       enabled: true,
-                                      fontSize: kIsWeb ? 22.sp : 40.sp,
+                                      fontSize: kIsWeb ? 18.sp : 40.sp,
                                       color: Colors.transparent,
                                       gradient: true,
                                       textColor: Colors.white,
@@ -859,14 +868,14 @@ class _OrderState extends State<Order> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      SizedBox(height: 12.sp),
+                                      SizedBox(height: kIsWeb ? 8.sp : 12.sp),
                                       Text(
                                         "مستني الأوردر يجهز من المطبخ...",
                                         textAlign: TextAlign.center,
                                         textDirection: TextDirection.rtl,
                                         style: TextStyling.smallFont.copyWith(
                                             color: Colors.deepOrange,
-                                            fontSize: kIsWeb ? 22.sp : 32.sp,
+                                            fontSize: kIsWeb ? 18.sp : 32.sp,
                                             fontWeight: FontWeight.w600),
                                       )
                                     ],
@@ -883,7 +892,7 @@ class _OrderState extends State<Order> {
                                         : Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal:
-                                                    kIsWeb ? 18.sp : 24.sp),
+                                                    kIsWeb ? 14.sp : 24.sp),
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
@@ -903,7 +912,7 @@ class _OrderState extends State<Order> {
                                                       .copyWith(
                                                           color: primaryColor,
                                                           fontSize: kIsWeb
-                                                              ? 22.sp
+                                                              ? 18.sp
                                                               : 32.sp),
                                                 ),
                                                 SizedBox(
@@ -912,168 +921,176 @@ class _OrderState extends State<Order> {
                                                 Container(
                                                   decoration: cardDecoration,
                                                   width: double.infinity,
-                                                  child: MyInkWell(
-                                                    onTap: () {
-                                                      bool driverExist = false;
-                                                      late DriverModel driver;
-                                                      for (var element
-                                                          in restaurantData
-                                                              .drivers) {
-                                                        element.name ==
-                                                                widget.order
-                                                                    .driverName
-                                                            ? {
-                                                                driverExist =
-                                                                    true,
-                                                                driver = element
-                                                              }
-                                                            : {};
-                                                      }
-
-                                                      driverExist
-                                                          ? Navigator.of(
-                                                                  context)
-                                                              .push(ScaleTransition5(
-                                                                  DriverProfile(
-                                                                      driver:
-                                                                          driver)))
-                                                          : showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                TextEditingController
-                                                                    nameController =
-                                                                    TextEditingController();
-                                                                TextEditingController
-                                                                    phoneNumberController =
-                                                                    TextEditingController();
-                                                                String
-                                                                    imagePath =
-                                                                    'assets/images/user.png';
-                                                                final ImagePicker
-                                                                    imgpicker =
-                                                                    ImagePicker();
-
-                                                                nameController
-                                                                        .text =
-                                                                    widget.order
-                                                                        .driverName;
-                                                                phoneNumberController
-                                                                        .text =
-                                                                    widget.order
-                                                                        .driverPhoneNumber;
-
-                                                                Widget
-                                                                    imageWidget =
-                                                                    Image.asset(
-                                                                        'assets/images/user.png');
-
-                                                                return AddDriverDialog(
-                                                                    phoneNumberController:
-                                                                        phoneNumberController,
-                                                                    nameController:
-                                                                        nameController,
-                                                                    imagePath:
-                                                                        imagePath,
-                                                                    imageWidget:
-                                                                        imageWidget,
-                                                                    selectImage: selectAndUploadImage(
-                                                                        context,
-                                                                        onUploaded:
-                                                                            (url) {
-                                                                      setState(
-                                                                          () {
-                                                                        imagePath =
-                                                                            url;
-                                                                        imageWidget =
-                                                                            CachedAvatar(imageUrl: url);
-                                                                      });
-                                                                    }));
-                                                              });
-                                                    },
-                                                    radius: 25.r,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.all(
-                                                          kIsWeb
-                                                              ? 12.sp
-                                                              : 24.0.sp),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          kIsWeb
-                                                              ? Text(
+                                                  child: IgnorePointer(
+                                                    ignoring: kIsWeb,
+                                                    child: MyInkWell(
+                                                      onTap: () {
+                                                        bool driverExist =
+                                                            false;
+                                                        late DriverModel driver;
+                                                        for (var element
+                                                            in restaurantData
+                                                                .drivers) {
+                                                          element.name ==
                                                                   widget.order
-                                                                      .driverPhoneNumber,
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .displayMedium
-                                                                      ?.copyWith(
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        color:
-                                                                            primaryColor,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                )
-                                                              : PhoneNumber(
-                                                                  phoneNumber:
+                                                                      .driverName
+                                                              ? {
+                                                                  driverExist =
+                                                                      true,
+                                                                  driver =
+                                                                      element
+                                                                }
+                                                              : {};
+                                                        }
+
+                                                        driverExist
+                                                            ? Navigator.of(
+                                                                    context)
+                                                                .push(ScaleTransition5(
+                                                                    DriverProfile(
+                                                                        driver:
+                                                                            driver)))
+                                                            : showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  TextEditingController
+                                                                      nameController =
+                                                                      TextEditingController();
+                                                                  TextEditingController
+                                                                      phoneNumberController =
+                                                                      TextEditingController();
+                                                                  String
+                                                                      imagePath =
+                                                                      'assets/images/user.png';
+                                                                  final ImagePicker
+                                                                      imgpicker =
+                                                                      ImagePicker();
+
+                                                                  nameController
+                                                                          .text =
                                                                       widget
                                                                           .order
-                                                                          .driverPhoneNumber),
-                                                          SizedBox(
-                                                            width: kIsWeb
-                                                                ? 0.05.sw
-                                                                : 0.28.sw,
-                                                            child: Text(
-                                                              widget.order
-                                                                  .driverName,
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .displayLarge!
-                                                                  .copyWith(
-                                                                      color:
-                                                                          primaryColor,
-                                                                      fontSize: kIsWeb
-                                                                          ? 22.sp
-                                                                          : 48.sp),
+                                                                          .driverName;
+                                                                  phoneNumberController
+                                                                          .text =
+                                                                      widget
+                                                                          .order
+                                                                          .driverPhoneNumber;
+
+                                                                  Widget
+                                                                      imageWidget =
+                                                                      Image.asset(
+                                                                          'assets/images/user.png');
+
+                                                                  return AddDriverDialog(
+                                                                      phoneNumberController:
+                                                                          phoneNumberController,
+                                                                      nameController:
+                                                                          nameController,
+                                                                      imagePath:
+                                                                          imagePath,
+                                                                      imageWidget:
+                                                                          imageWidget,
+                                                                      selectImage: selectAndUploadImage(
+                                                                          context,
+                                                                          onUploaded:
+                                                                              (url) {
+                                                                        setState(
+                                                                            () {
+                                                                          imagePath =
+                                                                              url;
+                                                                          imageWidget =
+                                                                              CachedAvatar(imageUrl: url);
+                                                                        });
+                                                                      }));
+                                                                });
+                                                      },
+                                                      radius: 25.r,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(
+                                                            kIsWeb
+                                                                ? 8.sp
+                                                                : 24.0.sp),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            kIsWeb
+                                                                ? Text(
+                                                                    widget.order
+                                                                        .driverPhoneNumber,
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .displayMedium
+                                                                        ?.copyWith(
+                                                                          fontSize:
+                                                                              14.sp,
+                                                                          color:
+                                                                              primaryColor,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
+                                                                  )
+                                                                : PhoneNumber(
+                                                                    phoneNumber:
+                                                                        widget
+                                                                            .order
+                                                                            .driverPhoneNumber),
+                                                            SizedBox(
+                                                              width: kIsWeb
+                                                                  ? 0.05.sw
+                                                                  : 0.28.sw,
+                                                              child: Text(
+                                                                widget.order
+                                                                    .driverName,
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .rtl,
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .displayLarge!
+                                                                    .copyWith(
+                                                                        color:
+                                                                            primaryColor,
+                                                                        fontSize: kIsWeb
+                                                                            ? 18.sp
+                                                                            : 48.sp),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          ClipOval(
-                                                            child: MyImage(
-                                                                width: kIsWeb
-                                                                    ? 40.h
-                                                                    : 100.h,
-                                                                height: kIsWeb
-                                                                    ? 40.h
-                                                                    : 100.h,
-                                                                image: widget
-                                                                        .order
-                                                                        .driverId
-                                                                        .isNotEmpty
-                                                                    ? widget
-                                                                        .order
-                                                                        .driverImage
-                                                                    : 'assets/images/user.png'),
-                                                          ),
-                                                        ],
+                                                            ClipOval(
+                                                              child: MyImage(
+                                                                  width: kIsWeb
+                                                                      ? 40.h
+                                                                      : 100.h,
+                                                                  height: kIsWeb
+                                                                      ? 40.h
+                                                                      : 100.h,
+                                                                  image: widget
+                                                                          .order
+                                                                          .driverId
+                                                                          .isNotEmpty
+                                                                      ? widget
+                                                                          .order
+                                                                          .driverImage
+                                                                      : 'assets/images/user.png'),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  height: kIsWeb ? 12.h : 24.sp,
+                                                  height: kIsWeb ? 8.h : 24.sp,
                                                 ),
                                                 widget.order.state == 'خلصان'
                                                     ? Container()
@@ -1086,7 +1103,7 @@ class _OrderState extends State<Order> {
                                                         width: double.infinity,
                                                         enabled: true,
                                                         fontSize: kIsWeb
-                                                            ? 22.sp
+                                                            ? 18.sp
                                                             : 40.sp,
                                                         color:
                                                             Colors.transparent,
@@ -1094,7 +1111,7 @@ class _OrderState extends State<Order> {
                                                         textColor: Colors.white,
                                                       ),
                                                 SizedBox(
-                                                  height: kIsWeb ? 12.h : 24.sp,
+                                                  height: kIsWeb ? 8.h : 24.sp,
                                                 ),
                                               ],
                                             ),

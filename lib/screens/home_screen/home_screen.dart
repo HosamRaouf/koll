@@ -18,6 +18,7 @@ import 'package:rive/rive.dart' hide LinearGradient, Image;
 import '../../components/cachedAvatar.dart';
 import '../../components/loading.dart';
 import '../../components/responsive_layout.dart';
+import '../../core/firebase_messaging/showNotification.dart';
 import '../../core/models/driver_model.dart';
 import '../../core/models/order_model.dart';
 import '../../styles.dart';
@@ -66,6 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeScreen.pageController = PageController(initialPage: 2);
     }
 
+    // Audio is disabled for Web as requested
+    if (kIsWeb) {
+      // audioPlayer.setVolume(0);
+      // audioPlayer.play(AssetSource("audio/beeb.mp3")).then((_) {
+      //   audioPlayer.stop();
+      //   audioPlayer.setVolume(1);
+      // });
+    }
+
     ordersStream.listen((event) {
       if (!mounted) return;
       streamValueNotifier.value.clear();
@@ -88,6 +98,17 @@ class _HomeScreenState extends State<HomeScreen> {
     ordersStream.listen((event) {}).cancel();
     _searchController.dispose();
     super.dispose();
+  }
+
+  // Optimized Play function - Audio disabled for Web
+  Future<void> _playSound(String path) async {
+    if (kIsWeb) return; // Don't play any audio if on web
+
+    try {
+      await audioPlayer.play(AssetSource(path));
+    } catch (e) {
+      if (kDebugMode) print("Error playing sound: $e");
+    }
   }
 
   @override
@@ -390,7 +411,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Container()
                       : const SizedBox(
                           width: 300,
-                          child: MyDrawer(),
+                          child: IgnorePointer(
+                              ignoring: kIsWeb, child: MyDrawer()),
                         ),
                 ],
               ),
@@ -542,8 +564,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         bool matchesState = order.state == stateName;
                         if (!matchesState) return false;
                         if (query.isEmpty) return true;
-                        String orderNumber =
-                            order.id.hashCode.toString().substring(0, 3);
+                        String orderNumber = order.orderNumber;
                         return orderNumber.contains(query);
                       }).toList();
 
@@ -571,7 +592,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.all(12.sp),
                               cacheExtent: 1500,
                               physics: const BouncingScrollPhysics(),
-                              crossAxisCount: 3,
+                              crossAxisCount: 4,
                               mainAxisSpacing: 12.sp,
                               crossAxisSpacing: 12.sp,
                               itemCount: tabOrders.length,
@@ -595,11 +616,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final userIdx = users.indexWhere((u) => u.firestoreId == order.userId);
     if (userIdx == -1) return loading();
 
-    print(lateOrders.value.any((n) => n.contains(order.orderNumber)));
+    final orderNumber = order.orderNumber == ""
+        ? "000"
+        : int.parse(order.orderNumber) < 10
+            ? "00${order.orderNumber}"
+            : int.parse(order.orderNumber) < 100
+                ? "0${order.orderNumber}"
+                : order.orderNumber;
+
     return RepaintBoundary(
       child: or.Order(
         user: users[userIdx],
-        isLate: lateOrders.value.any((n) => n.contains(order.orderNumber)),
+        isLate: lateOrders.value
+            .any((n) => n == "إنجز أوردر رقم $orderNumber أبوس إيدك"),
         order: order,
         onOrderAccepted: () => _handleAccept(order),
         onOrderSubmit: _handleAssign,
@@ -643,21 +672,21 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     acceptOrder(order, context, isLoading);
     isLoading.value = false;
-    audioPlayer.play(AssetSource("audio/3alnaar.mp3"));
+    _playSound("audio/3alnaar.mp3");
   }
 
   void _handleAssign(OrderModel order, DriverModel driver) async {
     isLoading.value = true;
     await assignDriver(order, driver, isLoading);
     isLoading.value = false;
-    audioPlayer.play(AssetSource("audio/beeb.mp3"));
+    _playSound("audio/beeb.mp3");
   }
 
   void _handleComplete(OrderModel order) async {
     isLoading.value = true;
     await orderComplete(order, isLoading);
     isLoading.value = false;
-    audioPlayer.play(AssetSource("audio/complete.mp3"));
+    _playSound("audio/complete.mp3");
   }
 
   void _handleDelete(OrderModel order, String body) async {

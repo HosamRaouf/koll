@@ -27,9 +27,12 @@ class _OrderButtonsState extends State<OrderButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 12.sp,
+        ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: kIsWeb ? 28.sp : 30.sp,
+            horizontal: kIsWeb ? 12.sp : 30.sp,
           ),
           child: MyElevatedButton(
               fontSize: kIsWeb ? 22.sp : 40.h,
@@ -44,10 +47,13 @@ class _OrderButtonsState extends State<OrderButtons> {
               textColor: Colors.white),
         ),
         SizedBox(
-          height: 12.sp,
+          height: 0.sp,
         ),
         Padding(
-          padding: EdgeInsets.only(top: 12.sp, left: 30.sp, right: 30.sp),
+          padding: EdgeInsets.only(
+              top: 12.sp,
+              left: kIsWeb ? 12.sp : 30.sp,
+              right: kIsWeb ? 12.sp : 30.sp),
           child: MyElevatedButton(
               enabled: true,
               fontSize: kIsWeb ? 22.sp : 40.h,
@@ -81,7 +87,7 @@ class _OrderButtonsState extends State<OrderButtons> {
               textColor: Colors.red),
         ),
         SizedBox(
-          height: 24.sp,
+          height: 12.sp,
         ),
       ],
     );

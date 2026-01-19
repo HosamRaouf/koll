@@ -39,7 +39,10 @@ class _ChooseDriverState extends State<ChooseDriver> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 35.sp, right: 35.sp, bottom: 15.sp),
+      padding: EdgeInsets.only(
+          left: kIsWeb ? 12.sp : 35.sp,
+          right: kIsWeb ? 12.sp : 35.sp,
+          bottom: 15.sp),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -58,7 +61,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
                     "طيار عشوائي",
                     textAlign: TextAlign.end,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: kIsWeb ? 22.sp : 36.sp,
+                        fontSize: kIsWeb ? 18.sp : 36.sp,
                         fontWeight: driverState == 'custom'
                             ? FontWeight.w700
                             : FontWeight.w500,
@@ -82,7 +85,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
                     "طيار من عندي",
                     textAlign: TextAlign.end,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: kIsWeb ? 22.sp : 36.sp,
+                        fontSize: kIsWeb ? 18.sp : 36.sp,
                         fontWeight: driverState == 'driver'
                             ? FontWeight.w700
                             : FontWeight.w500,

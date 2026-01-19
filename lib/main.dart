@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,15 +15,24 @@ import 'core/check_internet/noInternetListener.dart';
 import 'core/firebase_messaging/initializeng.dart';
 import 'firebase_options.dart';
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await notificationHandler(message);
+}
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
+
   await ScreenUtil.ensureScreenSize();
+
   AwesomeNotifications().initialize(
       null,
       [
@@ -44,16 +54,19 @@ main() async {
             channelGroupName: 'Basic group')
       ],
       debug: false);
+
+  // Initialize Firebase Messaging
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   initNoInternetListener();
-  requestPermission();
-  notificationListener();
+  requestPermission(); // Requests permissions and prints FCM Token
+  notificationListener(); // Sets up foreground listeners
 
   // Set the status bar style
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: warmColor, // Transparent status bar
-    statusBarIconBrightness:
-        Brightness.dark, // Dark icons for light backgrounds
-    statusBarBrightness: Brightness.light, // For iOS
+    statusBarColor: warmColor,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
   ));
 
   runApp(const MyApp());

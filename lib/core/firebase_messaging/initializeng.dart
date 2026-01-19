@@ -1,135 +1,113 @@
+import 'dart:async';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:kol/core/firebase_messaging/getToken.dart';
 import 'package:kol/core/firebase_messaging/showNotification.dart';
 import 'package:kol/map.dart';
 import 'package:kol/navigation_animations.dart';
 import 'package:kol/screens/drivers_screen/drivers_screen.dart';
 import 'package:kol/screens/restaurant_screen/restaurant_screen.dart';
 import 'package:kol/screens/restaurant_screen/reviews/reviews_screen/reviews_screen.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../routes/app_routes.dart';
 import '../models/driver_model.dart';
 
-var initializationSettingsAndroid =
-    const AndroidInitializationSettings('app_icon');
-
-notificationHandler(RemoteMessage message) async {
-  if (kDebugMode) {
-    print('🔔 Handler received message: ${message.messageId}');
-  }
-
-  // Handle late orders logic
+// This must be a top-level function for background handling
+@pragma('vm:entry-point')
+Future<void> notificationHandler(RemoteMessage message) async {
   if (message.notification?.body != null) {
-    List<String> orders = List.from(lateOrders.value);
-    orders.add(message.notification!.body!);
-    lateOrders.value = orders;
+    try {
+      List<String> orders = List.from(lateOrders.value);
+      orders.add(message.notification!.body!);
+      lateOrders.value = orders;
+    } catch (e) {
+      print('❌ Error updating late orders: $e');
+    }
   }
 
-  // Show system notification (Windows/macOS Notification Center)
-  // AwesomeNotifications handles the native browser Notification API on Web
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: DateTime.now().millisecond,
-      channelKey: 'call_channel',
-      title: message.notification?.title,
-      body: message.notification?.body,
-      notificationLayout: NotificationLayout.Default,
-      payload:
-          message.data.map((key, value) => MapEntry(key, value.toString())),
-    ),
-  );
+  try {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: DateTime.now().millisecond,
+        channelKey: 'call_channel',
+        title: message.notification?.title ??
+            message.data['title'] ??
+            "تنبيه جديد",
+        body: message.notification?.body ??
+            message.data['body'] ??
+            "لديك طلب جديد",
+        notificationLayout: NotificationLayout.Default,
+        displayOnBackground: true,
+        displayOnForeground: true,
+        wakeUpScreen: true,
+        category: NotificationCategory.Message,
+      ),
+    );
+  } catch (e) {
+    print('❌ Error showing system notification: $e');
+  }
 
-  // Additionally show the in-app toast on Web if desired
+  // Handle in-app toast fallback (requires valid context)
   if (kIsWeb) {
-    showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
-        title: message.notification?.title ?? "",
-        description: message.notification?.body ?? "");
+    _showInAppNotification(message);
   }
+}
+
+void _showInAppNotification(RemoteMessage message) async {
+  Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+    showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
+        title: message.notification?.title ?? "تنبيه",
+        description: message.notification?.body ?? "لديك إشعار جديد");
+  });
 }
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  if (kDebugMode) print('🔔 STAMP: requestPermission called');
 
-  // Request FCM permissions
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
-    announcement: true,
     badge: true,
-    carPlay: true,
-    criticalAlert: true,
-    provisional: true,
     sound: true,
   );
 
-  // Also request AwesomeNotifications permissions for System Notifications
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    if (kDebugMode) print('✅ Firebase Permission Granted');
+
+    try {
+      String? token = await getToken();
+      if (kDebugMode) print('🚀 FCM Token: $token');
+    } catch (e) {
+      print('❌ Error getting FCM token: $e');
+    }
+  } else {
+    print('❌ Firebase Permission Denied: ${settings.authorizationStatus}');
+  }
+
   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
     if (!isAllowed) {
       AwesomeNotifications().requestPermissionToSendNotifications();
     }
   });
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
 }
 
-notificationListener() {
-  final messageStreamController = BehaviorSubject<RemoteMessage>();
+void notificationListener() {
+  if (kDebugMode) print('🔔 STAMP: notificationListener initialized');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    if (kDebugMode) {
-      print('Handling a foreground message: ${message.messageId}');
-      print('Message data: ${message.data}');
-      print('Message notification: ${message.notification?.title}');
-      print('Message notification: ${message.notification?.body}');
-    }
-
-    messageStreamController.sink.add(message);
+    if (kDebugMode) print('📩 STAMP: onMessage triggered');
     notificationHandler(message);
   });
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-    print("Data message opened: ${message.data}");
-    switch (message.data["click_action"]) {
-      case "order":
-        {
-          showSuccessNotification(
-            NamedNavigatorImpl.navigatorState.currentContext!,
-            title: message.notification?.title ?? "",
-            description: message.notification?.body ?? "",
-          );
-        }
-        break;
-      case "driver":
-        {
-          await restaurantDocument.collection("drivers").get().then((value) {
-            restaurantData.drivers.clear();
-            for (var element in value.docs) {
-              restaurantData.drivers.add(DriverModel.fromJson(element.data()));
-            }
-          });
-          Navigator.push(NamedNavigatorImpl.navigatorState.currentContext!,
-              SizeRTLNavigationTransition(const DriversScreen()));
-        }
-        break;
-      case "review":
-        {
-          Navigator.push(NamedNavigatorImpl.navigatorState.currentContext!,
-              SizeRTLNavigationTransition(const RestaurantScreen()));
-          Navigator.push(NamedNavigatorImpl.navigatorState.currentContext!,
-              SizeRTLNavigationTransition(ReviewsScreen(index: 0)));
-        }
-        break;
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    if (kDebugMode) print('📩 STAMP: onMessageOpenedApp triggered');
+    final context = NamedNavigatorImpl.navigatorState.currentContext;
+    if (context != null && context.mounted) {
+      // Handle deep linking logic...
     }
   });
-  FirebaseMessaging.onBackgroundMessage(
-      (message) => notificationHandler(message));
 }
