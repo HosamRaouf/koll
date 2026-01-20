@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
+import 'dart:html'
+    if (dart.library.io) 'package:kol/core/firebase_messaging/stubs/html_stub.dart'
+    as html;
 import 'package:flutter/material.dart';
 import 'package:kol/core/firebase_messaging/getToken.dart';
 import 'package:kol/core/firebase_messaging/showNotification.dart';
@@ -13,8 +15,6 @@ import 'package:kol/navigation_animations.dart';
 import 'package:kol/screens/drivers_screen/drivers_screen.dart';
 import 'package:kol/screens/restaurant_screen/restaurant_screen.dart';
 import 'package:kol/screens/restaurant_screen/reviews/reviews_screen/reviews_screen.dart';
-import 'package:windows_notification/notification_message.dart';
-import 'package:windows_notification/windows_notification.dart';
 import '../../routes/app_routes.dart';
 import '../models/driver_model.dart';
 
