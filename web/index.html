@@ -47,6 +47,13 @@
 <body>
   <script>
     window.addEventListener('load', function(ev) {
+      // Register service worker with correct scope for subfolder
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('flutter_service_worker.js?v=' + serviceWorkerVersion, {
+          scope: './'
+        });
+      }
+
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {

@@ -27,8 +27,10 @@ jobs:
           # Get repository name for base-href
           REPO_NAME=$(echo "${{ github.repository }}" | awk -F / '{print $2}')
           
-          # Build with secure key injection and correct base-href
-          flutter build web --release --base-href "/$REPO_NAME/" --dart-define=FCM_VAPID_KEY="$FCM_VAPID_KEY"
+          # Clean and build with secure key injection and correct base-href
+          flutter clean
+          flutter pub get
+          flutter build web --release --base-href "/$REPO_NAME/" --dart-define=FCM_VAPID_KEY="$FCM_VAPID_KEY" --no-tree-shake-icons --verbose
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
