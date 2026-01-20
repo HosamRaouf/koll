@@ -9,7 +9,7 @@ import 'package:kol/core/shared_preferences/saveMap.dart';
 import 'package:kol/screens/restaurant_screen/pop_menu/areas_screen/area_widget.dart';
 import 'package:kol/styles.dart';
 
-import '../../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../../permessions.dart';
 
 class AreasScreen extends StatefulWidget {

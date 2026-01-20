@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kol/core/firebase_messaging/getToken.dart';
@@ -8,7 +9,7 @@ import 'package:kol/core/models/voucher_model.dart';
 import 'package:kol/core/shared_preferences/getPreference.dart';
 import 'package:kol/core/shared_preferences/saveMap.dart';
 
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../screens/restaurant_screen/pop_menu/color_picker/methods.dart';
 import '../../../screens/users_screen/users_screen.dart';
 import '../../../styles.dart';
@@ -48,23 +49,24 @@ Future<void> fetchAllData() async {
   String? email;
   await getPreference(key: 'email').then((value) {
     email = value;
+    print(email);
   });
   try {
-    QuerySnapshot querySnapshot =
-        await restaurants.where('email', isEqualTo: email).get();
-    print(
-        "================================================ 📡📡📡 Fetching General Data 📡📡📡 ==========================================");
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
-      if (document['email'] == email) {
-        restaurant = document.data() as Map<String, dynamic>;
-        restaurantData = RestaurantModel.fromJson(restaurant);
-        await assignValues();
-        assignColors(restaurant['color']);
-        saveMap();
-        print(
-            "================================================ ✅📡📡📡✅ General Data Fetched ✅📡📡📡✅ ==========================================");
-      }
-    }
+    await restaurants
+        .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email!)
+        .get()
+        .then((value) async {
+      print(
+          "================================================ 📡📡📡 Fetching General Data 📡📡📡 ==========================================");
+      restaurant = value.docs.first.data() as Map<String, dynamic>;
+      restaurantDocument = restaurants.doc(restaurant["id"]);
+      assignColors(restaurant['color']);
+      restaurantData = RestaurantModel.fromJson(restaurant);
+      await assignValues();
+      saveMap();
+      print(
+          "================================================ ✅📡📡📡✅ General Data Fetched ✅📡📡📡✅ ==========================================");
+    });
   } on FirebaseException catch (e) {
     print(
         "================================================ ❌📡📡📡❌ Error Fetching General Data ❌📡📡📡❌ ==========================================");
@@ -106,26 +108,16 @@ getCollectionValue(
 
 assignValues() async {
   await getToken().then((value) async {
-    List tokens = [];
-    for (var element in restaurantData.tokens) {
-      tokens.add(element);
-    }
-    if (!restaurantData.tokens.contains(value)) {
-      tokens.clear();
-      tokens.add(value);
+    List tokens = [value];
+    print(
+        "================================================ 🔐🛰️ Adding token 🛰️🔐 ==========================================");
+    try {
+      await restaurantDocument.update({"tokens": tokens});
       print(
-          "================================================ 🔐🛰️ Adding token 🛰️🔐 ==========================================");
-      try {
-        await restaurantDocument.update({"tokens": tokens});
-        print(
-            "================================================ 🔐✅ Token added ✅🔐 ==========================================");
-      } catch (E) {
-        print(
-            "================================================ 🔐❌ Error adding token ❌🔐 ==========================================");
-      }
-    } else {
+          "================================================ 🔐✅ Token added ✅🔐 ==========================================");
+    } catch (E) {
       print(
-          "================================================ 🔐😉 Token Exists 😉🔐 ==========================================");
+          "================================================ 🔐❌ Error adding token ❌🔐 ==========================================");
     }
   });
 

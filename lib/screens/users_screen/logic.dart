@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kol/screens/users_screen/user_widget.dart';
 
-import '../../map.dart';
+import 'package:kol/map.dart';
 
 List<Widget> userWidgets = [];
 List<Widget> searchedUserWidgets = [];

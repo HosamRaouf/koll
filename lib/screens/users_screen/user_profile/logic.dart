@@ -7,7 +7,7 @@ import 'package:kol/screens/users_screen/user_profile/user_order.dart';
 import '../../../core/models/user_models/user_model.dart';
 import '../../../core/models/user_models/user_order_data.dart';
 import '../../../core/models/voucher_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 
 List<Widget> userOrders = [];
 

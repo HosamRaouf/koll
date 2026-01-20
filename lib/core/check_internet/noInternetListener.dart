@@ -1,7 +1,7 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 
 class ConnectionStatusListener {
   //This creates the single instance by calling the `_internal` constructor specified below
@@ -34,15 +34,21 @@ class ConnectionStatusListener {
   Future<bool> checkConnection() async {
     bool previousConnection = hasConnection;
 
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        hasConnection = true;
-      } else {
+    if (kIsWeb) {
+      // On web, we rely on the connectivity result since dart:io InternetAddress.lookup is not supported
+      final result = await _connectivity.checkConnectivity();
+      hasConnection = result != ConnectivityResult.none;
+    } else {
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          hasConnection = true;
+        } else {
+          hasConnection = false;
+        }
+      } on SocketException catch (_) {
         hasConnection = false;
       }
-    } on SocketException catch (_) {
-      hasConnection = false;
     }
 
     //The connection status changed send out an update to all listeners
@@ -68,9 +74,9 @@ class ConnectionStatusListener {
 }
 
 updateConnectivity(
-    dynamic hasConnection,
-    ConnectionStatusListener connectionStatus,
-    ) {
+  dynamic hasConnection,
+  ConnectionStatusListener connectionStatus,
+) {
   if (!hasConnection) {
     connectionStatus.hasShownNoInternet = true;
     // Navigator.push(

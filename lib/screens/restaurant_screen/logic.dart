@@ -13,7 +13,7 @@ import 'package:kol/screens/restaurant_screen/restaurant_screen.dart';
 import '../../components/loading.dart';
 import '../../core/firestore_database/add/addToCollection.dart';
 import '../../core/models/menu_models/category_model.dart';
-import '../../map.dart';
+import 'package:kol/map.dart';
 import '../../styles.dart';
 import 'category_widget.dart';
 import 'most_ordered/most_ordered.dart';

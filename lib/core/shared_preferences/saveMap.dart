@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:kol/core/shared_preferences/getMap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../map.dart';
+import 'package:kol/map.dart';
 
 Future<void> saveMap() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

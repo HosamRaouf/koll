@@ -11,7 +11,7 @@ import 'package:kol/screens/home_screen/order_widget/order.dart';
 import 'package:persistent_header_adaptive/persistent_header_adaptive.dart';
 
 import '../../core/models/order_model.dart';
-import '../../map.dart';
+import 'package:kol/map.dart';
 import '../../styles.dart';
 
 class FinishedOrdersScreen extends StatefulWidget {

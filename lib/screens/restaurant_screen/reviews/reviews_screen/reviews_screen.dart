@@ -4,7 +4,7 @@ import 'package:kol/screens/restaurant_screen/reviews/reviews_screen/review_widg
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/models/rating_models/restaurant_rate_model.dart';
-import '../../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../../styles.dart';
 import 'header.dart';
 

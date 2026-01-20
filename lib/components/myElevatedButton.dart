@@ -73,7 +73,7 @@ class _MyElevatedButtonState extends State<MyElevatedButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: kIsWeb ? 60.sp : 100.h,
+      height: kIsWeb ? 50.sp : 100.h,
       width: widget.width,
       decoration: BoxDecoration(
         boxShadow: [

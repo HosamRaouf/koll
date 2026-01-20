@@ -31,8 +31,10 @@ ValueNotifier<List<OrderModel>> streamValueNotifier =
 
 class HomeScreen extends StatefulWidget {
   final bool isKitchen;
+  // Kept static as they might be accessed by external components (like BottomNav),
+  // but we must manage them strictly to avoid leaks.
   static ValueNotifier<int> index = ValueNotifier<int>(2);
-  static PageController pageController = PageController(initialPage: 3);
+  static PageController pageController = PageController(initialPage: 2);
 
   const HomeScreen({Key? key, required this.isKitchen}) : super(key: key);
 
@@ -45,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   final TextEditingController _searchController = TextEditingController();
   final ValueNotifier<String> _searchQuery = ValueNotifier<String>("");
+  StreamSubscription? _ordersSubscription;
 
   Stream<QuerySnapshot<Map<String, dynamic>>> ordersStream = restaurantDocument
       .collection("orders")
@@ -53,8 +56,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    super.initState();
+    _setupInitialState();
+
+    _ordersSubscription = ordersStream.listen((event) {
+      if (!mounted) return;
+      streamValueNotifier.value.clear();
+      for (var element in event.docs) {
+        streamValueNotifier.value.add(OrderModel.fromJson(element.data()));
+        if (!users.any((u) => u.firestoreId == element.data()['userId'])) {
+          or.fetchUser(element.data()['userId']);
+        }
+      }
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) streamValueNotifier.notifyListeners();
+      });
+    });
+  }
+
+  void _setupInitialState() {
     bool showReadyState = kIsWeb && !widget.isKitchen;
     bool isKitchenWeb = kIsWeb && widget.isKitchen;
+
+    // Dispose old controller if it exists before creating a new one
+    HomeScreen.pageController.dispose();
 
     if (isKitchenWeb) {
       HomeScreen.index.value = 0;
@@ -66,43 +91,21 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeScreen.index.value = 2;
       HomeScreen.pageController = PageController(initialPage: 2);
     }
-
-    // Audio is disabled for Web as requested
-    if (kIsWeb) {
-      // audioPlayer.setVolume(0);
-      // audioPlayer.play(AssetSource("audio/beeb.mp3")).then((_) {
-      //   audioPlayer.stop();
-      //   audioPlayer.setVolume(1);
-      // });
-    }
-
-    ordersStream.listen((event) {
-      if (!mounted) return;
-      streamValueNotifier.value.clear();
-      for (var element in event.docs) {
-        streamValueNotifier.value.add(OrderModel.fromJson(element.data()));
-        if (!users.any((u) => u.firestoreId == element.data()['userId'])) {
-          or.fetchUser(element.data()['userId']);
-        }
-      }
-      Future.delayed(const Duration(seconds: 1), () {
-        streamValueNotifier.notifyListeners();
-      });
-    });
-
-    super.initState();
   }
 
   @override
   void dispose() {
-    ordersStream.listen((event) {}).cancel();
+    _ordersSubscription?.cancel();
     _searchController.dispose();
+    // Note: We don't dispose HomeScreen.pageController here because
+    // it's static and might be needed by the next instance of HomeScreen
+    // during a pushReplacement. We dispose it in initState of the new instance.
     super.dispose();
   }
 
   // Optimized Play function - Audio disabled for Web
   Future<void> _playSound(String path) async {
-    if (kIsWeb) return; // Don't play any audio if on web
+    if (kIsWeb) return;
 
     try {
       await audioPlayer.play(AssetSource(path));
@@ -172,9 +175,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white,
                                       fontSize: 52.sp,
                                       fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 24.sp,
                                 ),
                                 SizedBox(
                                   width: 24.sp,
@@ -281,33 +281,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            if (!(kIsWeb && widget.isKitchen))
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
-                                      )
-                                    ]),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8),
-                                child: MyBottomNavigationBar(
-                                    index: HomeScreen.index.value,
-                                    pageController: HomeScreen.pageController,
-                                    isKitchen: widget.isKitchen,
-                                    isWeb: true),
-                              ),
-                            SizedBox(
-                              width: 24.sp,
-                            ),
-                            Container(
-                              width: 300.h,
+                        if (!(kIsWeb && widget.isKitchen))
+                          Flexible(
+                            child: Container(
+                              width: 300.w,
                               decoration: cardDecoration.copyWith(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(50.r),
@@ -340,7 +317,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                          ],
+                          ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                )
+                              ]),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 8),
+                          child: MyBottomNavigationBar(
+                              index: HomeScreen.index.value,
+                              pageController: HomeScreen.pageController,
+                              isKitchen: widget.isKitchen,
+                              isWeb: true),
                         ),
                         ValueListenableBuilder(
                             valueListenable: HomeScreen.index,
@@ -461,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           Container(
-            height: 1920.h,
+            height: 1.sh,
             decoration: BoxDecoration(
                 gradient: myGradient,
                 image: const DecorationImage(
@@ -502,9 +497,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 24.sp,
-              ),
+              SizedBox(height: 24.sp),
               _buildOrdersList(context),
             ],
           ),
@@ -528,8 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: warmColor,
           child: PageView(
               scrollDirection: Axis.horizontal,
-              allowImplicitScrolling:
-                  false, // Disabled implicit scrolling to reduce background work
+              allowImplicitScrolling: false,
               physics: isKitchenWeb
                   ? const NeverScrollableScrollPhysics()
                   : const BouncingScrollPhysics(),
@@ -601,8 +593,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           : ListView.builder(
                               padding: EdgeInsets.all(12.sp),
-                              cacheExtent:
-                                  1000, // Pre-render more items for mobile
+                              cacheExtent: 1000,
                               itemCount: tabOrders.length,
                               itemBuilder: (context, index) =>
                                   _orderItem(tabOrders[index]),
@@ -644,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _handleReady(OrderModel order) async {
     isLoading.value = true;
     await readyOrder(order, isLoading);
-    isLoading.value = false;
+    if (mounted) isLoading.value = false;
   }
 
   void _handleAccept(OrderModel order) async {
@@ -678,20 +669,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void _handleAssign(OrderModel order, DriverModel driver) async {
     isLoading.value = true;
     await assignDriver(order, driver, isLoading);
-    isLoading.value = false;
+    if (mounted) isLoading.value = false;
     _playSound("audio/beeb.mp3");
   }
 
   void _handleComplete(OrderModel order) async {
     isLoading.value = true;
     await orderComplete(order, isLoading);
-    isLoading.value = false;
+    if (mounted) isLoading.value = false;
     _playSound("audio/complete.mp3");
   }
 
   void _handleDelete(OrderModel order, String body) async {
     isLoading.value = true;
     await declineOrder(order, body);
-    isLoading.value = false;
+    if (mounted) isLoading.value = false;
   }
 }

@@ -30,7 +30,7 @@ import '../../../components/loading.dart';
 import '../../../components/my_alert_dialog.dart';
 import '../../../components/my_flat_button.dart';
 import '../../../core/models/menu_models/item_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../no_internet_screen.dart';
 import 'add_item_modal_bottom_sheet.dart';
 import 'image_widget.dart';

@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import 'fetchSpecificData.dart';
 
 fetchSomeData(BuildContext context) {

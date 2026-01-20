@@ -7,7 +7,7 @@ import 'package:kol/screens/restaurant_screen/reviews/reviews_screen/reviews_scr
 import '../../../../core/models/restaurant_model.dart';
 import '../../../../styles.dart';
 import '../../../components/my_flat_button.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../navigation_animations.dart';
 
 class Reviews extends StatelessWidget {

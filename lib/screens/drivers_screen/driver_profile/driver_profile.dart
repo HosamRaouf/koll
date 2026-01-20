@@ -21,7 +21,7 @@ import 'package:kol/styles.dart';
 import 'package:persistent_header_adaptive/persistent_header_adaptive.dart';
 
 import '../../../components/show_snack_bar.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../no_internet_screen.dart';
 
 class DriverProfile extends StatefulWidget {

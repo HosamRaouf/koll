@@ -5,7 +5,7 @@ import 'package:kol/core/models/restaurant_model.dart';
 import 'package:kol/core/shared_preferences/saveMap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../map.dart';
+import 'package:kol/map.dart';
 
 Future<Map<String, dynamic>?> getMap() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

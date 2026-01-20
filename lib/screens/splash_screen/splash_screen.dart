@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,37 +42,42 @@ class _SplashScreenState extends State<SplashScreen> {
   void _loadMainScreen() async {
     String? email;
     String? password;
-    await getPreference(key: "password").then((value) {
-      password = value!;
-    });
-    await getPreference(key: "email").then((value) {
-      email = value!;
-    });
-    await getBooleanValue(key: 'rememberMe').then((value) {
-      print("value $value");
-      value == false
-          ? {
-              Timer(
-                  const Duration(seconds: 3),
-                  () => Navigator.pushReplacement(
-                      context, ScaleTransition5(const LoginScreen())))
-            }
-          : {
-              signInWithEmailPassword(email!, password!, onError: (e) {
-                print(e.code);
-                Navigator.of(context).pop();
-              }, onSuccess: () async {
-                await fetchAllData().then((value) {
-                  Navigator.of(context)
-                      .pushReplacement(ScaleTransition5(const HomeScreen(
-                    isKitchen: false,
-                  )));
-                });
-              }, onLoading: () {}, onLoadingComplete: () {})
-            };
-    });
-
-    print(email);
+    if (kIsWeb) {
+      Timer(
+          const Duration(seconds: 1),
+          () => Navigator.pushReplacement(
+              context, ScaleTransition5(const LoginScreen())));
+    } else {
+      await getPreference(key: "password").then((value) {
+        password = value!;
+      });
+      await getPreference(key: "email").then((value) {
+        email = value!;
+      });
+      await getBooleanValue(key: 'rememberMe').then((value) {
+        print("value $value");
+        value == false
+            ? {
+                Timer(
+                    const Duration(seconds: 1),
+                    () => Navigator.pushReplacement(
+                        context, ScaleTransition5(const LoginScreen())))
+              }
+            : {
+                signInWithEmailPassword(email!, password!, onError: (e) {
+                  print(e.code);
+                  Navigator.of(context).pop();
+                }, onSuccess: () async {
+                  await fetchAllData().then((value) {
+                    Navigator.of(context)
+                        .pushReplacement(ScaleTransition5(const HomeScreen(
+                      isKitchen: false,
+                    )));
+                  });
+                }, onLoading: () {}, onLoadingComplete: () {})
+              };
+      });
+    }
   }
 
   void handleConnectivityChange(ConnectivityResult result) {

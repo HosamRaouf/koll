@@ -109,8 +109,10 @@ class _DropDownTextFieldState extends State<DropDownTextField> {
   @override
   void dispose() {
     _effectiveController.removeListener(_handleControllerUpdate);
-    _searchController.dispose();
-    _hideOverlay();
+    _hideOverlay(); // Move this before disposing search controller
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      _searchController.dispose();
+    });
     super.dispose();
   }
 

@@ -7,7 +7,7 @@ import 'package:kol/screens/home_screen/home_screen.dart';
 
 import '../../components/blank_screen.dart';
 import '../../components/myTextField.dart';
-import '../../map.dart';
+import 'package:kol/map.dart';
 import '../../styles.dart';
 import '../home_screen/order_widget/order.dart';
 import 'logic.dart';

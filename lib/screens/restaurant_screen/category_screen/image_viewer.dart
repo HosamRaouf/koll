@@ -13,7 +13,7 @@ import '../../../core/firestore_database/getDocId.dart';
 import '../../../core/models/menu_models/category_model.dart';
 import '../../../core/models/menu_models/item_model.dart';
 import '../../../core/shared_preferences/saveMap.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import 'category_screen.dart';
 
 class MyImageViewer extends StatefulWidget {

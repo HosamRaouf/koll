@@ -10,7 +10,7 @@ import 'package:kol/core/shared_preferences/saveMap.dart';
 import '../../../../components/myElevatedButton.dart';
 import '../../../../core/models/day_model.dart';
 import '../../../../styles.dart';
-import '../../../../map.dart';
+import 'package:kol/map.dart';
 import '../../logic.dart';
 
 class WorkingHoursModalBottomSheet extends StatefulWidget {
@@ -43,7 +43,7 @@ class _WorkingHoursModalBottomSheetState
         return Theme(
           data: ThemeData.light().copyWith(
             textTheme: Theme.of(context).textTheme,
-            colorScheme:  ColorScheme.light(
+            colorScheme: ColorScheme.light(
               // primary: MyColors.primary,
               primary: primaryColor,
               onPrimary: Colors.white,
@@ -71,19 +71,16 @@ class _WorkingHoursModalBottomSheetState
   List<DayModel> daysOfWork = [];
 
   @override
-
   void initState() {
     for (var element in restaurantData.workingDays) {
       daysOfWork.add(element);
     }
-
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.sp, vertical: 24.sp),
       child: Column(
@@ -137,11 +134,12 @@ class _WorkingHoursModalBottomSheetState
                           onTap: () {
                             setState(() {
                               isSelected = !isSelected;
-                              daysOfWork.contains(daysModels.reversed.toList()[index])
-                                  ?
-                              daysOfWork
-                                      .remove(daysModels.reversed.toList()[index])
-                                  : daysOfWork.add(daysModels.reversed.toList()[index]);
+                              daysOfWork.contains(
+                                      daysModels.reversed.toList()[index])
+                                  ? daysOfWork.remove(
+                                      daysModels.reversed.toList()[index])
+                                  : daysOfWork
+                                      .add(daysModels.reversed.toList()[index]);
                             });
                           },
                           radius: 24.sp,
@@ -171,8 +169,10 @@ class _WorkingHoursModalBottomSheetState
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [                  SizedBox(width: 60.sp,),
-
+            children: [
+              SizedBox(
+                width: 60.sp,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -184,8 +184,9 @@ class _WorkingHoursModalBottomSheetState
                         fontSize: 32.sp,
                         fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 24.sp,),
-
+                  SizedBox(
+                    height: 24.sp,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         color: warmColor,
@@ -207,7 +208,8 @@ class _WorkingHoursModalBottomSheetState
                             );
                           },
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 60.sp, vertical: 32.sp),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 60.sp, vertical: 32.sp),
                             child: Center(
                                 child: Text(
                               widget.closeAt,
@@ -224,8 +226,9 @@ class _WorkingHoursModalBottomSheetState
                   ),
                 ],
               ),
-              SizedBox(width: 60.sp,),
-
+              SizedBox(
+                width: 60.sp,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -237,7 +240,9 @@ class _WorkingHoursModalBottomSheetState
                         fontSize: 32.sp,
                         fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 24.sp,),
+                  SizedBox(
+                    height: 24.sp,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         color: warmColor,
@@ -259,7 +264,8 @@ class _WorkingHoursModalBottomSheetState
                             );
                           },
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 60.sp, vertical: 32.sp),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 60.sp, vertical: 32.sp),
                             child: Center(
                                 child: Text(
                               widget.opensAt,
@@ -276,8 +282,9 @@ class _WorkingHoursModalBottomSheetState
                   ),
                 ],
               ),
-              SizedBox(width: 60.sp,),
-
+              SizedBox(
+                width: 60.sp,
+              ),
             ],
           ),
           SizedBox(
@@ -286,16 +293,13 @@ class _WorkingHoursModalBottomSheetState
           MyElevatedButton(
             onPressed: () {
               setState(() {
-
                 restaurantData.workingDays = daysOfWork;
                 restaurant['workingDays'] = daysOfWork;
 
-                showDialog(context: context, builder: (context) => const Loading());
+                showDialog(
+                    context: context, builder: (context) => const Loading());
 
-                restaurantDocument.update({
-                  'workingDays': daysOfWork
-                });
-
+                restaurantDocument.update({'workingDays': daysOfWork});
 
                 saveMap();
 

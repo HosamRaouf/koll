@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kol/core/models/menu_models/category_model.dart';
 
 import '../../../core/models/menu_models/item_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import 'most_ordered_widget.dart';
 
 class MostOrdered extends StatefulWidget {

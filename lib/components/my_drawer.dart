@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +36,11 @@ class MyDrawer extends StatelessWidget {
     // or use kIsWeb if we want strict platform check.
     // Given the context, isDesktop seems to be the trigger for "Web Layout".
     return Container(
-      width: isDesktop ? double.infinity : 0.9.sw,
+      width: isDesktop
+          ? double.infinity
+          : (kIsWeb
+              ? (MediaQuery.of(context).size.width * 0.9).clamp(0.0, 400.0)
+              : 0.9.sw),
       color: primaryColor, // Changed to primaryColor
       child: isDesktop
           ? DrawerContent(isWeb: isDesktop)
@@ -113,7 +118,8 @@ class DrawerContent extends StatelessWidget {
                                   SizedBox(
                                     width: isWeb ? 12 : 24.sp,
                                   ),
-                                  Flexible( // Use Flexible to prevent overflow
+                                  Flexible(
+                                    // Use Flexible to prevent overflow
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerRight,

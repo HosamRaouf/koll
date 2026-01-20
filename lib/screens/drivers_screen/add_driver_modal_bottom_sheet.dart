@@ -11,7 +11,7 @@ import 'package:kol/screens/drivers_screen/logic.dart';
 import '../../components/loading.dart';
 import '../../components/myElevatedButton.dart';
 import '../../components/myTextField.dart';
-import '../../map.dart';
+import 'package:kol/map.dart';
 import '../../routes/app_routes.dart';
 import '../../styles.dart';
 

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,7 +5,7 @@ import '../../../components/loading.dart';
 import '../../../components/myTextField.dart';
 import '../../../components/show_snack_bar.dart';
 import '../../../core/models/driver_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../components/my_alert_dialog.dart';
 import '../../../styles.dart';
 
@@ -18,24 +15,27 @@ class AddDriverDialog extends StatefulWidget {
   var selectImage;
   TextEditingController nameController;
   TextEditingController phoneNumberController;
-  AddDriverDialog({super.key, required this.phoneNumberController, required this.nameController, required this.imagePath, required this.imageWidget, required this.selectImage,});
+  AddDriverDialog({
+    super.key,
+    required this.phoneNumberController,
+    required this.nameController,
+    required this.imagePath,
+    required this.imageWidget,
+    required this.selectImage,
+  });
 
   @override
   State<AddDriverDialog> createState() => _AddDriverDialogState();
 }
 
 class _AddDriverDialogState extends State<AddDriverDialog> {
-
   void addDriver(DriverModel driver) async {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => const Loading(),
     );
-    restaurantDocument
-        .collection('drivers')
-        .add(driver.toJson())
-        .then((value) {
+    restaurantDocument.collection('drivers').add(driver.toJson()).then((value) {
       restaurantData.drivers.add(DriverModel(
           id: uuid.v1(),
           firestoreId: "",
@@ -47,7 +47,8 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
       Navigator.pop(context);
       Navigator.pop(context);
       showSnackBar(
-          context: context, message: 'تم إضافة ${widget.nameController.text} بنجاح');
+          context: context,
+          message: 'تم إضافة ${widget.nameController.text} بنجاح');
     });
   }
 
@@ -86,12 +87,9 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
   @override
   Widget build(BuildContext context) {
     return MyAlertDialog(
-        isFirstButtonRed:
-        false,
-        controller:
-        TextEditingController(),
-        description:
-        'الطيار دا مش متسجل عندك، تحب تضيفه لقائمة الطيارين؟',
+        isFirstButtonRed: false,
+        controller: TextEditingController(),
+        description: 'الطيار دا مش متسجل عندك، تحب تضيفه لقائمة الطيارين؟',
         textfield: false,
         title: 'لا يوجد',
         body: Column(
@@ -102,27 +100,28 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
                 width: 200.h,
                 child: Stack(
                   children: [
-                    widget.imagePath ==
-                        'assets/images/user.png'
+                    widget.imagePath == 'assets/images/user.png'
                         ? Container(
-                      color: warmColor,
-                        height: 200.h,
-                        width: 200.h,
-                        child: ClipOval(
-                            child:  Padding(
-                              padding:  EdgeInsets.all(12.sp),
-                              child: Icon(Icons.delivery_dining, color: primaryColor, size: 52,),)),)
+                            color: warmColor,
+                            height: 200.h,
+                            width: 200.h,
+                            child: ClipOval(
+                                child: Padding(
+                              padding: EdgeInsets.all(12.sp),
+                              child: Icon(
+                                Icons.delivery_dining,
+                                color: primaryColor,
+                                size: 52,
+                              ),
+                            )),
+                          )
                         : widget.imageWidget,
                     ClipOval(
-                      child:
-                      Material(
-                        color:
-                        Colors.transparent,
-                        child:
-                        InkWell(
-                          onTap:
-                              () {
-                                widget.selectImage();
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            widget.selectImage();
                           },
                         ),
                       ),
@@ -137,19 +136,13 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
             MyTextField(
               error: "",
               descriptionTextField: false,
-
               title: "",
-              controller:
-              widget.nameController,
+              controller: widget.nameController,
               type: 'normal',
-              hintText:
-              'الإسم',
-              isExpanding:
-              false,
-              isValidatable:
-              true,
-              onChanged:
-                  (text) {},
+              hintText: 'الإسم',
+              isExpanding: false,
+              isValidatable: true,
+              onChanged: (text) {},
               maxLength: 25,
             ),
             SizedBox(
@@ -158,17 +151,12 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
             MyTextField(
               error: "",
               descriptionTextField: false,
-
               title: "",
-              controller:
-              widget.phoneNumberController,
+              controller: widget.phoneNumberController,
               type: 'number',
-              hintText:
-              'رقم الهاتف',
-              isExpanding:
-              false,
-              isValidatable:
-              true,
+              hintText: 'رقم الهاتف',
+              isExpanding: false,
+              isValidatable: true,
               onChanged: (text) {},
               maxLength: 11,
             ),
@@ -179,24 +167,18 @@ class _AddDriverDialogState extends State<AddDriverDialog> {
         ),
         firstButton: 'إضافة',
         secondButton: 'إلغاء',
-        onFirstButtonPressed:
-            () {
+        onFirstButtonPressed: () {
           validate(then: () {
             addDriver(DriverModel(
                 id: uuid.v1(),
                 firestoreId: '',
-                name: widget.nameController
-                    .text,
-                phoneNumber: widget.phoneNumberController
-                    .text,
-                image:
-                widget.imagePath,
+                name: widget.nameController.text,
+                phoneNumber: widget.phoneNumberController.text,
+                image: widget.imagePath,
                 orders: [],
                 rates: []));
           });
         },
-        onSecondButtonPressed:
-            () {});
+        onSecondButtonPressed: () {});
   }
 }
-

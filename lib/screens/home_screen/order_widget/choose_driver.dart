@@ -53,7 +53,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              Flexible(
                 child: RadioListTile(
                   activeColor: primaryColor,
                   contentPadding: const EdgeInsets.all(0),
@@ -61,7 +61,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
                     "طيار عشوائي",
                     textAlign: TextAlign.end,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: kIsWeb ? 18.sp : 36.sp,
+                        fontSize: kIsWeb ? 16.sp : 36.sp,
                         fontWeight: driverState == 'custom'
                             ? FontWeight.w700
                             : FontWeight.w500,
@@ -77,7 +77,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
                   },
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: RadioListTile(
                   activeColor: primaryColor,
                   contentPadding: const EdgeInsets.all(0),
@@ -85,7 +85,7 @@ class _ChooseDriverState extends State<ChooseDriver> {
                     "طيار من عندي",
                     textAlign: TextAlign.end,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: kIsWeb ? 18.sp : 36.sp,
+                        fontSize: kIsWeb ? 16.sp : 36.sp,
                         fontWeight: driverState == 'driver'
                             ? FontWeight.w700
                             : FontWeight.w500,
@@ -105,7 +105,8 @@ class _ChooseDriverState extends State<ChooseDriver> {
           ),
           driverState == 'driver'
               ? Container(
-                  constraints: BoxConstraints(minHeight: kIsWeb ? 60.h : 120.h),
+                  constraints:
+                      BoxConstraints(minHeight: kIsWeb ? 45.sp : 120.h),
                   decoration: BoxDecoration(
                       color: backGroundColor,
                       borderRadius: BorderRadius.circular(20.r)),
@@ -137,13 +138,11 @@ class _ChooseDriverState extends State<ChooseDriver> {
                       });
                     },
                   ))
-              : Flexible(
-                  child: CustomeDriver(
-                      nameController: nameController,
-                      numberController: numberController),
-                ),
+              : CustomeDriver(
+                  nameController: nameController,
+                  numberController: numberController),
           SizedBox(
-            height: 24.sp,
+            height: kIsWeb ? 12.sp : 24.sp,
           ),
           MyElevatedButton(
             fontSize: kIsWeb ? 22.sp : 40.h,

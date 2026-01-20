@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kol/core/firebase_messaging/getToken.dart';
@@ -12,7 +13,8 @@ import 'package:kol/navigation_animations.dart';
 import 'package:kol/screens/drivers_screen/drivers_screen.dart';
 import 'package:kol/screens/restaurant_screen/restaurant_screen.dart';
 import 'package:kol/screens/restaurant_screen/reviews/reviews_screen/reviews_screen.dart';
-
+import 'package:windows_notification/notification_message.dart';
+import 'package:windows_notification/windows_notification.dart';
 import '../../routes/app_routes.dart';
 import '../models/driver_model.dart';
 
@@ -29,40 +31,44 @@ Future<void> notificationHandler(RemoteMessage message) async {
     }
   }
 
-  try {
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: DateTime.now().millisecond,
-        channelKey: 'call_channel',
-        title: message.notification?.title ??
-            message.data['title'] ??
-            "تنبيه جديد",
-        body: message.notification?.body ??
-            message.data['body'] ??
-            "لديك طلب جديد",
-        notificationLayout: NotificationLayout.Default,
-        displayOnBackground: true,
-        displayOnForeground: true,
-        wakeUpScreen: true,
-        category: NotificationCategory.Message,
-      ),
-    );
-  } catch (e) {
-    print('❌ Error showing system notification: $e');
-  }
-
-  // Handle in-app toast fallback (requires valid context)
-  if (kIsWeb) {
+  if (!kIsWeb) {
+    try {
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: DateTime.now().millisecond,
+          channelKey: 'call_channel',
+          title: message.notification?.title ??
+              message.data['title'] ??
+              "تنبيه جديد",
+          body: message.notification?.body ??
+              message.data['body'] ??
+              "لديك طلب جديد",
+          notificationLayout: NotificationLayout.Default,
+          displayOnBackground: true,
+          displayOnForeground: true,
+          wakeUpScreen: true,
+          category: NotificationCategory.Message,
+        ),
+      );
+    } catch (e) {
+      print('❌ Error showing system notification: $e');
+    }
+  } else {
     _showInAppNotification(message);
   }
 }
 
 void _showInAppNotification(RemoteMessage message) async {
-  Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-    showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
-        title: message.notification?.title ?? "تنبيه",
-        description: message.notification?.body ?? "لديك إشعار جديد");
-  });
+  // Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+  //   showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
+  //       title: message.notification?.title ?? "تنبيه",
+  //       description: message.notification?.body ?? "لديك إشعار جديد");
+  // });
+  html.Notification(
+    message.notification?.title ?? 'Notification',
+    body: message.notification?.body ?? '',
+    icon: '/icons/icon-192.png',
+  );
 }
 
 void requestPermission() async {
@@ -79,6 +85,10 @@ void requestPermission() async {
     if (kDebugMode) print('✅ Firebase Permission Granted');
 
     try {
+      if (kIsWeb) {
+        // Wait for service worker to fully stabilize on web
+        await Future.delayed(const Duration(seconds: 2));
+      }
       String? token = await getToken();
       if (kDebugMode) print('🚀 FCM Token: $token');
     } catch (e) {

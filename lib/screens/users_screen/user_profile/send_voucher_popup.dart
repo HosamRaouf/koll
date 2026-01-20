@@ -8,7 +8,7 @@ import 'package:kol/styles.dart';
 
 import '../../../core/models/user_models/user_model.dart';
 import '../../../core/models/voucher_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 
 ValueNotifier<VoucherModel> chosenVoucher = ValueNotifier<VoucherModel>(
     VoucherModel(

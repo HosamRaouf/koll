@@ -10,7 +10,7 @@ import '../../../components/show_snack_bar.dart';
 import '../../../core/firestore_database/getDocId.dart';
 import '../../../core/models/menu_models/category_model.dart';
 import '../../../core/models/menu_models/item_model.dart';
-import '../../../map.dart';
+import 'package:kol/map.dart';
 import '../../../styles.dart';
 import 'category_screen.dart';
 
@@ -22,13 +22,14 @@ class EditSize extends StatefulWidget {
   bool edit;
   CategoryModel category;
 
-  EditSize({super.key,
-    required this.price,
-    required this.size,
-    required this.element,
-    required this.rebuildWidgets,
-    required this.edit,
-    required this.category});
+  EditSize(
+      {super.key,
+      required this.price,
+      required this.size,
+      required this.element,
+      required this.rebuildWidgets,
+      required this.edit,
+      required this.category});
 
   @override
   State<EditSize> createState() => _EditSizeState();
@@ -40,9 +41,9 @@ class _EditSizeState extends State<EditSize> {
         CategoryScreen.item.firestoreId == "") {
       print(widget.category.id);
       await getDocId(
-          docWhere: restaurantDocument
-              .collection('menu')
-              .where('id', isEqualTo: widget.category.id))
+              docWhere: restaurantDocument
+                  .collection('menu')
+                  .where('id', isEqualTo: widget.category.id))
           .then((value) async {
         await restaurantDocument
             .collection('menu')
@@ -53,11 +54,11 @@ class _EditSizeState extends State<EditSize> {
         print('sssssss ${widget.category.firestoreId}');
       }).then((value) async {
         await getDocId(
-            docWhere: restaurantDocument
-                .collection('menu')
-                .doc(widget.category.firestoreId)
-                .collection('items')
-                .where('id', isEqualTo: CategoryScreen.item.id))
+                docWhere: restaurantDocument
+                    .collection('menu')
+                    .doc(widget.category.firestoreId)
+                    .collection('items')
+                    .where('id', isEqualTo: CategoryScreen.item.id))
             .then((value) async {
           CategoryScreen.item.firestoreId = value;
           await restaurantDocument
@@ -71,11 +72,9 @@ class _EditSizeState extends State<EditSize> {
       });
     } else {
       print(
-          'firestore ID already exist - category: ${widget.category
-              .firestoreId}');
+          'firestore ID already exist - category: ${widget.category.firestoreId}');
       print(
-          'firestore ID already exist - item: ${CategoryScreen.item
-              .firestoreId}');
+          'firestore ID already exist - item: ${CategoryScreen.item.firestoreId}');
     }
   }
 
@@ -84,13 +83,14 @@ class _EditSizeState extends State<EditSize> {
 
   @override
   Widget build(BuildContext context) {
-
     List menu = restaurant['menu'];
-    int categoryIndex = menu.indexWhere((element) => element['id'] == widget.category.id);
+    int categoryIndex =
+        menu.indexWhere((element) => element['id'] == widget.category.id);
     Map<String, dynamic> category = menu[categoryIndex];
 
     List items = category['items'];
-    int itemIndex = items.indexWhere((item) => item['id'] == CategoryScreen.thisItem.id);
+    int itemIndex =
+        items.indexWhere((item) => item['id'] == CategoryScreen.thisItem.id);
     Map<String, dynamic> item = items[itemIndex];
 
     return Padding(
@@ -104,11 +104,7 @@ class _EditSizeState extends State<EditSize> {
             children: [
               Text(
                 widget.edit ? 'تعديل السعر' : 'إضافة سعر',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .displayMedium
-                    ?.copyWith(
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     color: primaryColor,
                     fontWeight: FontWeight.w700,
                     fontSize: 64.sp),
@@ -153,28 +149,22 @@ class _EditSizeState extends State<EditSize> {
                 onPressed: () async {
                   print(widget.size.text);
                   print(widget.price.text);
-                  if(widget.size.text.isEmpty && widget.price.text.isEmpty) {
+                  if (widget.size.text.isEmpty && widget.price.text.isEmpty) {
                     setState(() {
                       sizeError = "من فضلك أدخل الحجم";
                       priceError = "من فضلك أدخل السعر";
                     });
-                  }
-                  else if (
-                  widget.size.text.isEmpty
-                  ) {
+                  } else if (widget.size.text.isEmpty) {
                     setState(() {
                       sizeError = "من فضلك أدخل الحجم";
                       priceError = "";
                     });
-                  }
-                  else if(      widget.price.text.isEmpty) {
+                  } else if (widget.price.text.isEmpty) {
                     setState(() {
                       sizeError = "";
                       priceError = "من فضلك أدخل السعر";
                     });
-                  }
-
-                  else {
+                  } else {
                     if (widget.edit) {
                       List sizes = [];
                       {
@@ -187,13 +177,12 @@ class _EditSizeState extends State<EditSize> {
                           sizes.add(element.toJson());
                         }
 
-
-                        sizes[sizes.indexWhere((element) => element['id'] == widget.element.id)] =
-                            SizeModel(
+                        sizes[sizes.indexWhere((element) =>
+                            element['id'] == widget.element.id)] = SizeModel(
                                 id: widget.element.id,
                                 name: widget.size.text,
                                 price: double.parse(widget.price.text))
-                                .toJson();
+                            .toJson();
 
                         await getFirestoreId().then((value) async {
                           await restaurantDocument
@@ -202,9 +191,10 @@ class _EditSizeState extends State<EditSize> {
                               .collection('items')
                               .doc(CategoryScreen.item.firestoreId)
                               .update({'prices': sizes}).then((value) {
-
-                            CategoryScreen.item.prices[CategoryScreen.item.prices
-                                .indexWhere((element) => element.id == widget.element.id)] =
+                            CategoryScreen.item.prices[CategoryScreen
+                                    .item.prices
+                                    .indexWhere((element) =>
+                                        element.id == widget.element.id)] =
                                 SizeModel(
                                     id: widget.element.id,
                                     name: widget.size.text,
@@ -222,13 +212,14 @@ class _EditSizeState extends State<EditSize> {
                             showSnackBar(
                               context: context,
                               message:
-                              'تم تعديل ${widget.size.text} إلى ${widget.price
-                                  .text}EGP بنجاح',
+                                  'تم تعديل ${widget.size.text} إلى ${widget.price.text}EGP بنجاح',
                             );
                           });
                         }).catchError((e) {
                           Navigator.pop(context);
-                          showSnackBar(context: context, message: 'خطأ في الشبكة، حاول مرة أخرى');
+                          showSnackBar(
+                              context: context,
+                              message: 'خطأ في الشبكة، حاول مرة أخرى');
                         });
                       }
                     } else {
@@ -250,7 +241,7 @@ class _EditSizeState extends State<EditSize> {
                           builder: (context) => const Loading(),
                           barrierDismissible: false);
 
-                      await getFirestoreId().then((value)  {
+                      await getFirestoreId().then((value) {
                         print('firestore got');
                         sizes.add(sizeModel.toJson());
 
@@ -260,7 +251,6 @@ class _EditSizeState extends State<EditSize> {
                             .collection('items')
                             .doc(CategoryScreen.item.firestoreId)
                             .update({'prices': sizes}).then((value) {
-
                           print('updating');
 
                           item['prices'].add(sizeModel.toJson());
@@ -272,11 +262,8 @@ class _EditSizeState extends State<EditSize> {
                                   name: widget.size.text,
                                   price: double.parse(widget.price.text)));
 
-                          CategoryScreen.thisItem.prices = CategoryScreen.item.prices;
-
-
-
-
+                          CategoryScreen.thisItem.prices =
+                              CategoryScreen.item.prices;
 
                           saveMap();
                           widget.rebuildWidgets(false);
@@ -288,15 +275,12 @@ class _EditSizeState extends State<EditSize> {
                           showSnackBar(
                             context: context,
                             message:
-                            'تم إضافة ${widget.size.text} - ${widget.price
-                                .text}EGP بنجاح',
+                                'تم إضافة ${widget.size.text} - ${widget.price.text}EGP بنجاح',
                           );
                         });
                       });
                     }
                   }
-
-
                 },
                 text: widget.edit ? 'تعديل' : 'إضافة',
                 width: double.infinity,

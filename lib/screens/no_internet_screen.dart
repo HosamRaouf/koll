@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +66,7 @@ class _InternetCheckState extends State<InternetCheck> {
     return SafeArea(
       child: ValueListenableBuilder(
           valueListenable: _connectivityResult,
-          builder: (context, _connectivityResult, child) {
+          builder: (context, connectivityResult, child) {
             return Stack(
               children: [
                 widget.child,
@@ -79,60 +80,65 @@ class _InternetCheckState extends State<InternetCheck> {
                           child: Container(
                             decoration:
                                 cardDecoration.copyWith(color: Colors.white),
-                            width: 0.7.sw,
-                            height: 0.7.sw,
-                            child: Padding(
-                              padding: EdgeInsets.all(40.sp),
-                              child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Icon(
-                                        Iconsax.warning_2,
-                                        color: primaryColor,
-                                        size: 60.sp,
-                                      ),
-                                      SizedBox(
-                                        width: 24.sp,
-                                      ),
-                                      Text(
-                                        'لا يوجد انترنت',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge!
-                                            .copyWith(fontSize: 60.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 24.sp,
-                                  ),
-                                  Text(
-                                    'من فضلك تأكد من الاتصال بالانترنت',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium!
-                                        .copyWith(
-                                            fontSize: 42.sp,
-                                            color: smallFontColor),
-                                  ),
-                                  SizedBox(
-                                    height: 40.sp,
-                                  ),
-                                  Center(
-                                    child: SizedBox(
-                                        width: 0.4.sw,
-                                        height: 0.4.sw,
-                                        child: Image.asset(
-                                          'assets/images/nointernetavatar.png',
-                                          fit: BoxFit.cover,
-                                        )),
-                                  )
-                                ],
+                            height: kIsWeb ? 0.6.sh : 0.7.sw,
+                            width: kIsWeb ? 0.6.sh : 0.7.sw,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(kIsWeb ? 22.sp : 40.sp),
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Iconsax.warning_2,
+                                          color: primaryColor,
+                                          size: kIsWeb ? 32.sp : 60.sp,
+                                        ),
+                                        SizedBox(
+                                          width: kIsWeb ? 12.sp : 24.sp,
+                                        ),
+                                        Text(
+                                          'لا يوجد انترنت',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge!
+                                              .copyWith(
+                                                  fontSize:
+                                                      kIsWeb ? 32.sp : 60.sp),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: kIsWeb ? 12.sp : 24.sp,
+                                    ),
+                                    Text(
+                                      'من فضلك تأكد من الاتصال بالانترنت',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium!
+                                          .copyWith(
+                                              fontSize: kIsWeb ? 22.sp : 42.sp,
+                                              color: smallFontColor),
+                                    ),
+                                    SizedBox(
+                                      height: kIsWeb ? 22.sp : 40.sp,
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                          width: kIsWeb ? 0.2.sw : 0.4.sw,
+                                          height: kIsWeb ? 0.2.sw : 0.4.sw,
+                                          child: Image.asset(
+                                            'assets/images/nointernetavatar.png',
+                                            fit: BoxFit.cover,
+                                          )),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ).animate().scale(),
