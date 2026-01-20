@@ -1,4 +1,4 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+// lib/main.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +12,7 @@ import 'package:kol/styles.dart';
 import 'package:kol/themes.dart';
 
 import 'core/check_internet/noInternetListener.dart';
+import 'core/firebase_messaging/platform_notifications/notificator.dart';
 import 'core/firebase_messaging/initializeng.dart';
 import 'firebase_options.dart';
 
@@ -33,27 +34,7 @@ main() async {
 
   await ScreenUtil.ensureScreenSize();
 
-  AwesomeNotifications().initialize(
-      null,
-      [
-        NotificationChannel(
-            channelGroupKey: 'basic_channel_group',
-            channelKey: 'call_channel',
-            channelName: 'Basic notifications',
-            importance: NotificationImportance.Max,
-            playSound: true,
-            channelDescription: 'Notification channel for basic tests',
-            enableVibration: true,
-            enableLights: true,
-            defaultColor: primaryColor,
-            ledColor: primaryColor)
-      ],
-      channelGroups: [
-        NotificationChannelGroup(
-            channelGroupKey: 'basic_channel_group',
-            channelGroupName: 'Basic group')
-      ],
-      debug: false);
+  await Notificator.instance.initialize();
 
   // Initialize Firebase Messaging
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

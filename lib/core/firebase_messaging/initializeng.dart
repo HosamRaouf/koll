@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:html'
-    if (dart.library.io) 'package:kol/core/firebase_messaging/stubs/html_stub.dart'
-    as html;
+import 'package:kol/core/firebase_messaging/platform_notifications/notificator.dart';
 import 'package:flutter/material.dart';
 import 'package:kol/core/firebase_messaging/getToken.dart';
 import 'package:kol/core/firebase_messaging/showNotification.dart';
@@ -31,45 +28,15 @@ Future<void> notificationHandler(RemoteMessage message) async {
     }
   }
 
-  if (!kIsWeb) {
-    try {
-      await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: DateTime.now().millisecond,
-          channelKey: 'call_channel',
-          title: message.notification?.title ??
-              message.data['title'] ??
-              "تنبيه جديد",
-          body: message.notification?.body ??
-              message.data['body'] ??
-              "لديك طلب جديد",
-          notificationLayout: NotificationLayout.Default,
-          displayOnBackground: true,
-          displayOnForeground: true,
-          wakeUpScreen: true,
-          category: NotificationCategory.Message,
-        ),
-      );
-    } catch (e) {
-      print('❌ Error showing system notification: $e');
-    }
-  } else {
-    _showInAppNotification(message);
-  }
-}
-
-void _showInAppNotification(RemoteMessage message) async {
-  // Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-  //   showSuccessNotification(NamedNavigatorImpl.navigatorState.currentContext!,
-  //       title: message.notification?.title ?? "تنبيه",
-  //       description: message.notification?.body ?? "لديك إشعار جديد");
-  // });
-  html.Notification(
-    message.notification?.title ?? 'Notification',
-    body: message.notification?.body ?? '',
-    icon: '/icons/icon-192.png',
+  await Notificator.instance.createNotification(
+    id: DateTime.now().millisecond,
+    channelKey: 'call_channel',
+    title: message.notification?.title ?? message.data['title'] ?? "تنبيه جديد",
+    body: message.notification?.body ?? message.data['body'] ?? "لديك طلب جديد",
   );
 }
+
+// _showInAppNotification is now handled by Notificator.instance.createNotification
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -98,13 +65,11 @@ void requestPermission() async {
     print('❌ Firebase Permission Denied: ${settings.authorizationStatus}');
   }
 
-  if (!kIsWeb) {
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
-  }
+  Notificator.instance.isAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      Notificator.instance.requestPermission();
+    }
+  });
 }
 
 void notificationListener() {
