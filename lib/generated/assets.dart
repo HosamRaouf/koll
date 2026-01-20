@@ -2,6 +2,20 @@
 class Assets {
   Assets._();
 
+  static const String amiriAmiriBold =
+      'assets/packages/arabic_font/assets/fonts/Amiri/Amiri-Bold.ttf';
+  static const String amiriAmiriBoldItalic =
+      'assets/packages/arabic_font/assets/fonts/Amiri/Amiri-BoldItalic.ttf';
+  static const String amiriAmiriItalic =
+      'assets/packages/arabic_font/assets/fonts/Amiri/Amiri-Italic.ttf';
+  static const String amiriAmiriRegular =
+      'assets/packages/arabic_font/assets/fonts/Amiri/Amiri-Regular.ttf';
+  static const String arefRuqaaArefRuqaaBold =
+      'assets/packages/arabic_font/assets/fonts/Aref_Ruqaa/ArefRuqaa-Bold.ttf';
+  static const String arefRuqaaArefRuqaaRegular =
+      'assets/packages/arabic_font/assets/fonts/Aref_Ruqaa/ArefRuqaa-Regular.ttf';
+  static const String assetsAssetManifest = 'assets/AssetManifest.bin';
+  static const String assetsAssetManifestBin = 'assets/AssetManifest.bin.json';
   static const String assetsAudio1 = 'assets/audio/1.mp3';
   static const String assetsAudio3alnaar = 'assets/audio/3alnaar.mp3';
   static const String assetsAudio3omda = 'assets/audio/3omda.mp3';
@@ -13,7 +27,25 @@ class Assets {
   static const String assetsAudioKebda = 'assets/audio/kebda.mp3';
   static const String assetsAudioMabrook = 'assets/audio/mabrook.mp3';
   static const String assetsAudioOrder = 'assets/audio/order.mp3';
+  static const String assetsCupertinoIcons =
+      'assets/packages/cupertino_icons/assets/CupertinoIcons.ttf';
+  static const String assetsFontManifest = 'assets/FontManifest.json';
+  static const String assetsImages1 = 'assets/images/1.jpg';
+  static const String assetsImages2 = 'assets/images/2.jpg';
+  static const String assetsImages3 = 'assets/images/3.jpg';
   static const String assetsImagesDelivery = 'assets/images/delivery.png';
+  static const String assetsImagesDriver = 'assets/images/driver.png';
+  static const String assetsImagesIcons = 'assets/images/icons.png';
+  static const String assetsImagesIcons2 = 'assets/images/icons2.png';
+  static const String assetsImagesLogo = 'assets/images/logo.png';
+  static const String assetsImagesNointernetavatar =
+      'assets/images/nointernetavatar.png';
+  static const String assetsImagesRestaurant = 'assets/images/restaurant.jpg';
+  static const String assetsImagesUser = 'assets/images/user.png';
+  static const String assetsNOTICES = 'assets/NOTICES';
+  static const String assetsRivDropdownmenu =
+      'assets/assets/riv/dropdownmenu.riv';
+  static const String assetsRivLogo = 'assets/assets/riv/logo.riv';
   static const String audio1 = 'assets/audio/1.mp3';
   static const String audio3alnaar = 'assets/audio/3alnaar.mp3';
   static const String audio3omda = 'assets/audio/3omda.mp3';
@@ -25,55 +57,161 @@ class Assets {
   static const String audioKebda = 'assets/audio/kebda.mp3';
   static const String audioMabrook = 'assets/audio/mabrook.mp3';
   static const String audioOrder = 'assets/audio/order.mp3';
-  static const String dessert1 = 'assets/images/dessert/1.png';
-  static const String dessert10 = 'assets/images/dessert/10.png';
-  static const String dessert11 = 'assets/images/dessert/11.png';
-  static const String dessert12 = 'assets/images/dessert/12.png';
-  static const String dessert13 = 'assets/images/dessert/13.png';
-  static const String dessert14 = 'assets/images/dessert/14.png';
-  static const String dessert2 = 'assets/images/dessert/2.png';
-  static const String dessert3 = 'assets/images/dessert/3.png';
-  static const String dessert4 = 'assets/images/dessert/4.png';
-  static const String dessert5 = 'assets/images/dessert/5.png';
-  static const String dessert6 = 'assets/images/dessert/6.png';
-  static const String dessert7 = 'assets/images/dessert/7.png';
-  static const String dessert8 = 'assets/images/dessert/8.png';
-  static const String dessert9 = 'assets/images/dessert/9.png';
-  static const String drinks1 = 'assets/images/drinks/1.png';
-  static const String drinks2 = 'assets/images/drinks/2.png';
-  static const String drinks3 = 'assets/images/drinks/3.png';
-  static const String drinks4 = 'assets/images/drinks/4.png';
-  static const String drinks5 = 'assets/images/drinks/5.png';
-  static const String drinks6 = 'assets/images/drinks/6.png';
-  static const String drinks7 = 'assets/images/drinks/7.png';
-  static const String drinks8 = 'assets/images/drinks/8.png';
-  static const String food1 = 'assets/images/food/1.png';
-  static const String food10 = 'assets/images/food/10.png';
-  static const String food11 = 'assets/images/food/11.png';
-  static const String food12 = 'assets/images/food/12.png';
-  static const String food13 = 'assets/images/food/13.png';
-  static const String food14 = 'assets/images/food/14.png';
-  static const String food15 = 'assets/images/food/15.png';
-  static const String food16 = 'assets/images/food/16.png';
-  static const String food17 = 'assets/images/food/17.png';
-  static const String food18 = 'assets/images/food/18.png';
-  static const String food19 = 'assets/images/food/19.png';
-  static const String food2 = 'assets/images/food/2.png';
-  static const String food20 = 'assets/images/food/20.png';
-  static const String food21 = 'assets/images/food/21.png';
-  static const String food22 = 'assets/images/food/22.png';
-  static const String food23 = 'assets/images/food/23.png';
-  static const String food3 = 'assets/images/food/3.png';
-  static const String food4 = 'assets/images/food/4.png';
-  static const String food5 = 'assets/images/food/5.png';
-  static const String food6 = 'assets/images/food/6.png';
-  static const String food7 = 'assets/images/food/7.png';
-  static const String food8 = 'assets/images/food/8.png';
-  static const String food9 = 'assets/images/food/9.png';
-  static const String images1 = 'assets/images/1.jpg';
-  static const String images2 = 'assets/images/2.jpg';
-  static const String images3 = 'assets/images/3.jpg';
-  static const String imagesDelivery = 'assets/images/delivery.png';
+  static const String avenirArabicAvenirArabicBlack =
+      'assets/packages/arabic_font/assets/fonts/Avenir_Arabic/Avenir-Arabic-Black.ttf';
+  static const String avenirArabicAvenirArabicBook =
+      'assets/packages/arabic_font/assets/fonts/Avenir_Arabic/Avenir-Arabic-Book.ttf';
+  static const String avenirArabicAvenirArabicHeavy =
+      'assets/packages/arabic_font/assets/fonts/Avenir_Arabic/Avenir-Arabic-Heavy.ttf';
+  static const String avenirArabicAvenirArabicMedium =
+      'assets/packages/arabic_font/assets/fonts/Avenir_Arabic/Avenir-Arabic-Medium.ttf';
+  static const String avenirArabicAvenirArabicRegular =
+      'assets/packages/arabic_font/assets/fonts/Avenir_Arabic/Avenir-Arabic-Regular.ttf';
+  static const String balooBhaijaanBalooBhaijaanRegular =
+      'assets/packages/arabic_font/assets/fonts/Baloo_Bhaijaan/BalooBhaijaan-Regular.ttf';
+  static const String cairoCairoBlack =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-Black.ttf';
+  static const String cairoCairoBold =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-Bold.ttf';
+  static const String cairoCairoExtraLight =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-ExtraLight.ttf';
+  static const String cairoCairoLight =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-Light.ttf';
+  static const String cairoCairoRegular =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-Regular.ttf';
+  static const String cairoCairoSemiBold =
+      'assets/packages/arabic_font/assets/fonts/Cairo/Cairo-SemiBold.ttf';
+  static const String changaChangaBold =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-Bold.ttf';
+  static const String changaChangaExtraBold =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-ExtraBold.ttf';
+  static const String changaChangaExtraLight =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-ExtraLight.ttf';
+  static const String changaChangaLight =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-Light.ttf';
+  static const String changaChangaMedium =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-Medium.ttf';
+  static const String changaChangaRegular =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-Regular.ttf';
+  static const String changaChangaSemiBold =
+      'assets/packages/arabic_font/assets/fonts/Changa/Changa-SemiBold.ttf';
+  static const String dessert1 = 'assets/assets/images/dessert/1.png';
+  static const String dessert10 = 'assets/assets/images/dessert/10.png';
+  static const String dessert11 = 'assets/assets/images/dessert/11.png';
+  static const String dessert12 = 'assets/assets/images/dessert/12.png';
+  static const String dessert13 = 'assets/assets/images/dessert/13.png';
+  static const String dessert14 = 'assets/assets/images/dessert/14.png';
+  static const String dessert2 = 'assets/assets/images/dessert/2.png';
+  static const String dessert3 = 'assets/assets/images/dessert/3.png';
+  static const String dessert4 = 'assets/assets/images/dessert/4.png';
+  static const String dessert5 = 'assets/assets/images/dessert/5.png';
+  static const String dessert6 = 'assets/assets/images/dessert/6.png';
+  static const String dessert7 = 'assets/assets/images/dessert/7.png';
+  static const String dessert8 = 'assets/assets/images/dessert/8.png';
+  static const String dessert9 = 'assets/assets/images/dessert/9.png';
+  static const String dinNextLTArabicArbFONTSDINNEXTLTARABICLIGHT1 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNEXTLTARABIC-LIGHT-1.ttf';
+  static const String dinNextLTArabicArbFONTSDINNextLTArabicBlack3 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNextLTArabic-Black-3.ttf';
+  static const String dinNextLTArabicArbFONTSDINNextLTArabicBold2 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNextLTArabic-Bold-2.ttf';
+  static const String dinNextLTArabicArbFONTSDINNextLTArabicHeavy1 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNextLTArabic-Heavy-1.ttf';
+  static const String dinNextLTArabicArbFONTSDINNextLTArabicMedium2 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNextLTArabic-Medium-2.ttf';
+  static const String dinNextLTArabicArbFONTSDINNextLTArabicRegular2 =
+      'assets/packages/arabic_font/assets/fonts/DinNextLTArabic/ArbFONTS-DINNextLTArabic-Regular-2.ttf';
+  static const String drinks1 = 'assets/assets/images/drinks/1.png';
+  static const String drinks2 = 'assets/assets/images/drinks/2.png';
+  static const String drinks3 = 'assets/assets/images/drinks/3.png';
+  static const String drinks4 = 'assets/assets/images/drinks/4.png';
+  static const String drinks5 = 'assets/assets/images/drinks/5.png';
+  static const String drinks6 = 'assets/assets/images/drinks/6.png';
+  static const String drinks7 = 'assets/assets/images/drinks/7.png';
+  static const String drinks8 = 'assets/assets/images/drinks/8.png';
+  static const String dubaiDubaiBold =
+      'assets/packages/arabic_font/assets/fonts/Dubai/Dubai-Bold.ttf';
+  static const String dubaiDubaiLight =
+      'assets/packages/arabic_font/assets/fonts/Dubai/Dubai-Light.ttf';
+  static const String dubaiDubaiMedium =
+      'assets/packages/arabic_font/assets/fonts/Dubai/Dubai-Medium.ttf';
+  static const String dubaiDubaiRegular =
+      'assets/packages/arabic_font/assets/fonts/Dubai/Dubai-Regular.ttf';
+  static const String elMessiriElMessiriBold =
+      'assets/packages/arabic_font/assets/fonts/El_Messiri/ElMessiri-Bold.ttf';
+  static const String elMessiriElMessiriMedium =
+      'assets/packages/arabic_font/assets/fonts/El_Messiri/ElMessiri-Medium.ttf';
+  static const String elMessiriElMessiriRegular =
+      'assets/packages/arabic_font/assets/fonts/El_Messiri/ElMessiri-Regular.ttf';
+  static const String elMessiriElMessiriSemiBold =
+      'assets/packages/arabic_font/assets/fonts/El_Messiri/ElMessiri-SemiBold.ttf';
+  static const String fontsFontAwesome7BrandsRegular400 =
+      'assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Brands-Regular-400.otf';
+  static const String fontsFontAwesome7FreeRegular400 =
+      'assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Free-Regular-400.otf';
+  static const String fontsFontAwesome7FreeSolid900 =
+      'assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Free-Solid-900.otf';
+  static const String fontsIconsax =
+      'assets/packages/iconsax/lib/assets/fonts/iconsax.ttf';
+  static const String fontsMaterialIconsRegular =
+      'assets/fonts/MaterialIcons-Regular.otf';
+  static const String food1 = 'assets/assets/images/food/1.png';
+  static const String food10 = 'assets/assets/images/food/10.png';
+  static const String food11 = 'assets/assets/images/food/11.png';
+  static const String food12 = 'assets/assets/images/food/12.png';
+  static const String food13 = 'assets/assets/images/food/13.png';
+  static const String food14 = 'assets/assets/images/food/14.png';
+  static const String food15 = 'assets/assets/images/food/15.png';
+  static const String food16 = 'assets/assets/images/food/16.png';
+  static const String food17 = 'assets/assets/images/food/17.png';
+  static const String food18 = 'assets/assets/images/food/18.png';
+  static const String food19 = 'assets/assets/images/food/19.png';
+  static const String food2 = 'assets/assets/images/food/2.png';
+  static const String food20 = 'assets/assets/images/food/20.png';
+  static const String food21 = 'assets/assets/images/food/21.png';
+  static const String food22 = 'assets/assets/images/food/22.png';
+  static const String food23 = 'assets/assets/images/food/23.png';
+  static const String food3 = 'assets/assets/images/food/3.png';
+  static const String food4 = 'assets/assets/images/food/4.png';
+  static const String food5 = 'assets/assets/images/food/5.png';
+  static const String food6 = 'assets/assets/images/food/6.png';
+  static const String food7 = 'assets/assets/images/food/7.png';
+  static const String food8 = 'assets/assets/images/food/8.png';
+  static const String food9 = 'assets/assets/images/food/9.png';
+  static const String harmattanHarmattanRegular =
+      'assets/packages/arabic_font/assets/fonts/Harmattan/Harmattan-Regular.ttf';
+  static const String ibmIBMPlexArabicText =
+      'assets/packages/arabic_font/assets/fonts/ibm/IBMPlexArabic-Text.ttf';
+  static const String iconsDribble =
+      'assets/packages/getwidget/icons/dribble.png';
+  static const String iconsError =
+      'assets/packages/elegant_notification/assets/icons/error.png';
+  static const String iconsFacebook =
+      'assets/packages/getwidget/icons/facebook.png';
+  static const String iconsGoogle =
+      'assets/packages/getwidget/icons/google.png';
+  static const String iconsInfo =
+      'assets/packages/elegant_notification/assets/icons/info.png';
+  static const String iconsLine = 'assets/packages/getwidget/icons/line.png';
+  static const String iconsLinkedin =
+      'assets/packages/getwidget/icons/linkedin.png';
+  static const String iconsPinterest =
+      'assets/packages/getwidget/icons/pinterest.png';
+  static const String iconsSlack = 'assets/packages/getwidget/icons/slack.png';
+  static const String iconsSuccess =
+      'assets/packages/elegant_notification/assets/icons/success.png';
+  static const String iconsTwitter =
+      'assets/packages/getwidget/icons/twitter.png';
+  static const String iconsWechat =
+      'assets/packages/getwidget/icons/wechat.png';
+  static const String iconsWhatsapp =
+      'assets/packages/getwidget/icons/whatsapp.png';
+  static const String iconsYoutube =
+      'assets/packages/getwidget/icons/youtube.png';
+  static const String images1 = 'assets/assets/images/1.jpg';
+  static const String images2 = 'assets/assets/images/2.jpg';
+  static const String images3 = 'assets/assets/images/3.jpg';
+  static const String imagesDelivery = 'assets/assets/images/delivery.png';
   static const String imagesDessert1 = 'assets/images/dessert/1.png';
   static const String imagesDessert10 = 'assets/images/dessert/10.png';
   static const String imagesDessert11 = 'assets/images/dessert/11.png';
@@ -96,7 +234,7 @@ class Assets {
   static const String imagesDrinks6 = 'assets/images/drinks/6.png';
   static const String imagesDrinks7 = 'assets/images/drinks/7.png';
   static const String imagesDrinks8 = 'assets/images/drinks/8.png';
-  static const String imagesDriver = 'assets/images/driver.png';
+  static const String imagesDriver = 'assets/assets/images/driver.png';
   static const String imagesFood1 = 'assets/images/food/1.png';
   static const String imagesFood10 = 'assets/images/food/10.png';
   static const String imagesFood11 = 'assets/images/food/11.png';
@@ -120,13 +258,17 @@ class Assets {
   static const String imagesFood7 = 'assets/images/food/7.png';
   static const String imagesFood8 = 'assets/images/food/8.png';
   static const String imagesFood9 = 'assets/images/food/9.png';
-  static const String imagesIcons = 'assets/images/icons.png';
-  static const String imagesIcons2 = 'assets/images/icons2.png';
-  static const String imagesLogo = 'assets/images/logo.png';
+  static const String imagesIcons = 'assets/assets/images/icons.png';
+  static const String imagesIcons2 = 'assets/assets/images/icons2.png';
+  static const String imagesLogo = 'assets/assets/images/logo.png';
   static const String imagesNointernetavatar =
-      'assets/images/nointernetavatar.png';
-  static const String imagesRestaurant = 'assets/images/restaurant.jpg';
-  static const String imagesUser = 'assets/images/user.png';
-  static const String rivDropdownmenu = 'assets/riv/dropdownmenu.riv';
-  static const String rivLogo = 'assets/riv/logo.riv';
+      'assets/assets/images/nointernetavatar.png';
+  static const String imagesRestaurant = 'assets/assets/images/restaurant.jpg';
+  static const String imagesTestImage =
+      'assets/packages/awesome_notifications/test/assets/images/test_image.png';
+  static const String imagesUser = 'assets/assets/images/user.png';
+  static const String jomhuriaJomhuriaRegular =
+      'assets/packages/arabic_font/assets/fonts/Jomhuria/Jomhuria-Regular.ttf';
+  static const String katibehKatibehRegular =
+      'assets/packages/arabic_font/assets/fonts/Katibeh/Katibeh-Regular.ttf';
 }
