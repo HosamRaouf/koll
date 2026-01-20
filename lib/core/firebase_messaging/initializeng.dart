@@ -98,11 +98,13 @@ void requestPermission() async {
     print('❌ Firebase Permission Denied: ${settings.authorizationStatus}');
   }
 
-  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    if (!isAllowed) {
-      AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-  });
+  if (!kIsWeb) {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
 }
 
 void notificationListener() {
