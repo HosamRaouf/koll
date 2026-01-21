@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="/koll/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="تطبيق مطاعم دكرنس">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="كل">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>كل</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    const serviceWorkerVersion = "2450878931";
+  </script>
+  <script src="flutter.js" defer></script>
+
+  <!-- Firebase SDK Compat (v8) for manual linking -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+
+  <script>
+    // Initialize Firebase in the window to link the Service Worker correctly
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBHirLhke-mtgAAceYlOpTkOvq1asudDks',
+      appId: '1:335102829731:web:0c35f8d5dcb73469dd4b16',
+      messagingSenderId: '335102829731',
+      projectId: 'koll-8ca48',
+      authDomain: 'koll-8ca48.firebaseapp.com',
+      databaseURL: 'https://koll-8ca48-default-rtdb.firebaseio.com',
+      storageBucket: 'koll-8ca48.appspot.com',
+      measurementId: 'G-SSMYP7SEGV',
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    if ('serviceWorker' in navigator) {
+      // Register the Service Worker relative to the base href
+      navigator.serviceWorker.register('firebase-messaging-sw.js').then(function (reg) {
+        // IMPORTANT: Tell the Firebase SDK to use this specific registration
+        messaging.useServiceWorker(reg);
+        console.log('✅ Firebase Messaging SW linked with scope:', reg.scope);
+      }).catch(function (err) {
+        console.error('❌ Firebase Messaging SW linking failed:', err);
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <script>
+    window.addEventListener('load', function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        }
+      }).then(function (engineInitializer) {
+        return engineInitializer.initializeEngine();
+      }).then(function (appRunner) {
+        return appRunner.runApp();
+      });
+    });
+  </script>
+</body>
+
+</html>
